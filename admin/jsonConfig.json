@@ -1,16 +1,40 @@
 {
     "i18n": true,
-    "type": "panel",
+    "type": "tabs",
     "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
-            "newLine": true
+        "general": {
+            "type": "panel",
+            "label": "general",
+            "items": {
+                "host": {
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "type": "text",
+                    "label": "host"
+                },
+                "requestInterval": {
+                    "xs": 12,
+                    "sm": 4,
+                    "md": 2,
+                    "type": "number",
+                    "label": "request_interval"
+                }
+            }
         },
-        "option2": {
-            "type": "text",
-            "label": "option2",
-            "newLine": true
+        "energy_control": {
+            "type": "panel",
+            "label": "energy_control",
+            "items": {
+                "energyMeterId": {
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "type": "objectId",
+                    "label": "energy_meter_id",
+                    "newLine": true
+                }
+            }
         }
     }
 }

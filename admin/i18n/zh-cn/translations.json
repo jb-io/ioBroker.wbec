@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "wbec的适配器设置",
     "option1": "选项1",
-    "option2": "选项2"
+    "option2": "选项2",
+    "host": "主持人",
+    "request_interval": "请求间隔（秒）",
+    "energy_meter_id": "电表 ID",
+    "general": "一般的",
+    "energy_control": "能量控制"
 }

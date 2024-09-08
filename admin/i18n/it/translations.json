@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "Impostazioni dell'adattatore per wbec",
     "option1": "opzione1",
-    "option2": "opzione2"
+    "option2": "opzione2",
+    "host": "Ospite",
+    "request_interval": "Intervallo di richiesta (sec)",
+    "energy_meter_id": "Identificativo del contatore di energia",
+    "general": "Generale",
+    "energy_control": "Controllo energetico"
 }

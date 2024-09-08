@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "Ajustes del adaptador para wbec",
     "option1": "opción1",
-    "option2": "opción2"
+    "option2": "opción2",
+    "host": "Anfitrión",
+    "request_interval": "Intervalo de solicitud (seg)",
+    "energy_meter_id": "ID del medidor de energía",
+    "general": "General",
+    "energy_control": "Control de energía"
 }
