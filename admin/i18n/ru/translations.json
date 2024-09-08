@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "Настройки адаптера для wbec",
     "option1": "вариант 1",
-    "option2": "вариант 2"
+    "option2": "вариант 2",
+    "host": "Хозяин",
+    "request_interval": "Интервал запроса (сек)",
+    "energy_meter_id": "Идентификатор счетчика энергии",
+    "general": "Общий",
+    "energy_control": "Контроль энергии"
 }

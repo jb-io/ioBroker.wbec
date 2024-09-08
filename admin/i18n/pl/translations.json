@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "Ustawienia adaptera dla wbec",
     "option1": "opcja 1",
-    "option2": "opcja 2"
+    "option2": "opcja 2",
+    "host": "Gospodarz",
+    "request_interval": "Interwał żądania (s)",
+    "energy_meter_id": "Identyfikator licznika energii",
+    "general": "Ogólny",
+    "energy_control": "Kontrola energii"
 }

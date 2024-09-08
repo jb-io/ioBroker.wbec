@@ -1,5 +1,10 @@
 {
     "wbec adapter settings": "Adapterinstellingen voor wbec",
     "option1": "optie1",
-    "option2": "optie2"
+    "option2": "optie2",
+    "host": "Gastheer",
+    "request_interval": "Verzoekinterval (sec)",
+    "energy_meter_id": "Energiemeter-ID",
+    "general": "Algemeen",
+    "energy_control": "Energiecontrole"
 }

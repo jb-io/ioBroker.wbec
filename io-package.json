@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "wbec",
-        "version": "0.0.1",
+        "version": "0.1.0",
         "news": {
-            "0.0.1": {
+            "0.1.0": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",
                 "ru": "Начальная версия",
@@ -51,7 +51,6 @@
             "wallbox",
             "energy management"
         ],
-        "license": "GPL-3.0",
         "licenseInformation": {
             "type": "free",
             "license": "GPL-3.0"
@@ -84,8 +83,9 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "host": "",
+        "interval": 120,
+        "energyMeterId": null
     },
     "objects": [],
     "instanceObjects": [
