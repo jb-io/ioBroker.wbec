@@ -1,114 +1,127 @@
 {
-    "common": {
-        "name": "wbec",
-        "version": "0.0.1",
-        "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "Початкова версія",
-                "zh-cn": "首次出版"
-            }
-        },
-        "title": "Heidelberg WallBox Energy Control",
-        "titleLang": {
-            "en": "Heidelberg WallBox Energy Control",
-            "de": "Heidelberg WallBox Energiesteuerung",
-            "ru": "Управление энергопотреблением Heidelberg WallBox",
-            "pt": "Controle de energia Heidelberg WallBox",
-            "nl": "Heidelberg WallBox Energiecontrole",
-            "fr": "Contrôle de l'énergie Heidelberg WallBox",
-            "it": "Controllo energetico Heidelberg WallBox",
-            "es": "Control de energía Heidelberg WallBox",
-            "pl": "Sterowanie energią Heidelberg WallBox",
-            "uk": "Heidelberg WallBox Energy Control",
-            "zh-cn": "海德堡 WallBox 能源控制"
-        },
-        "desc": {
-            "en": "Integration of Heidelberg WallBox Energy Control ESP8266",
-            "de": "Integration der Heidelberg WallBox Energy Control ESP8266",
-            "ru": "Интеграция Heidelberg WallBox Energy Control ESP8266",
-            "pt": "Integração do Heidelberg WallBox Energy Control ESP8266",
-            "nl": "Integratie van Heidelberg WallBox Energy Control ESP8266",
-            "fr": "Intégration de Heidelberg WallBox Energy Control ESP8266",
-            "it": "Integrazione di Heidelberg WallBox Energy Control ESP8266",
-            "es": "Integración del control de energía Heidelberg WallBox ESP8266",
-            "pl": "Integracja sterownika energii Heidelberg WallBox ESP8266",
-            "uk": "Інтеграція Heidelberg WallBox Energy Control ESP8266",
-            "zh-cn": "集成海德堡WallBox能量控制ESP8266"
-        },
-        "authors": [
-            "jb-io <96919536+jb-io@users.noreply.github.com>"
-        ],
-        "keywords": [
-            "wallbox",
-            "energy management"
-        ],
-        "licenseInformation": {
-            "type": "free",
-            "license": "GPL-3.0-or-later"
-        },
-        "platform": "Javascript/Node.js",
-        "main": "build/main.js",
-        "icon": "wbec.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/jb-io/ioBroker.wbec/master/admin/wbec.png",
-        "readme": "https://github.com/jb-io/ioBroker.wbec/blob/master/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "iot-systems",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=5.0.0"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=6.0.0"
-            }
-        ]
+  "common": {
+    "name": "wbec",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "[TASK] initial release",
+        "de": "[TASK] erste Veröffentlichung",
+        "ru": "[TASK] первоначальный релиз",
+        "pt": "[TASK] lançamento inicial",
+        "nl": "[TASK] eerste release",
+        "fr": "[TASK] libération initiale",
+        "it": "[TASK] rilascio iniziale",
+        "es": "[TASK] versión inicial",
+        "pl": "[TASK] wydanie wstępne",
+        "uk": "[TASK] початковий реліз",
+        "zh-cn": "[TASK]初始发布"
+      },
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Початкова версія",
+        "zh-cn": "首次出版"
+      }
     },
-    "native": {
-        "host": "",
-        "interval": 120,
-        "energyMeterId": null
+    "title": "Heidelberg WallBox Energy Control",
+    "titleLang": {
+      "en": "Heidelberg WallBox Energy Control",
+      "de": "Heidelberg WallBox Energiesteuerung",
+      "ru": "Управление энергопотреблением Heidelberg WallBox",
+      "pt": "Controle de energia Heidelberg WallBox",
+      "nl": "Heidelberg WallBox Energiecontrole",
+      "fr": "Contrôle de l'énergie Heidelberg WallBox",
+      "it": "Controllo energetico Heidelberg WallBox",
+      "es": "Control de energía Heidelberg WallBox",
+      "pl": "Sterowanie energią Heidelberg WallBox",
+      "uk": "Heidelberg WallBox Energy Control",
+      "zh-cn": "海德堡 WallBox 能源控制"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Integration of Heidelberg WallBox Energy Control ESP8266",
+      "de": "Integration der Heidelberg WallBox Energy Control ESP8266",
+      "ru": "Интеграция Heidelberg WallBox Energy Control ESP8266",
+      "pt": "Integração do Heidelberg WallBox Energy Control ESP8266",
+      "nl": "Integratie van Heidelberg WallBox Energy Control ESP8266",
+      "fr": "Intégration de Heidelberg WallBox Energy Control ESP8266",
+      "it": "Integrazione di Heidelberg WallBox Energy Control ESP8266",
+      "es": "Integración del control de energía Heidelberg WallBox ESP8266",
+      "pl": "Integracja sterownika energii Heidelberg WallBox ESP8266",
+      "uk": "Інтеграція Heidelberg WallBox Energy Control ESP8266",
+      "zh-cn": "集成海德堡WallBox能量控制ESP8266"
+    },
+    "authors": [
+      "jb-io <96919536+jb-io@users.noreply.github.com>"
+    ],
+    "keywords": [
+      "wallbox",
+      "energy management"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "GPL-3.0-or-later"
+    },
+    "platform": "Javascript/Node.js",
+    "main": "build/main.js",
+    "icon": "wbec.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/jb-io/ioBroker.wbec/master/admin/wbec.png",
+    "readme": "https://github.com/jb-io/ioBroker.wbec/blob/master/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "iot-systems",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
     ]
+  },
+  "native": {
+    "host": "",
+    "interval": 120,
+    "energyMeterId": null
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
