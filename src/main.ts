@@ -14,6 +14,7 @@ import _ from 'lodash';
 class Wbec extends utils.Adapter {
 
    private requestInterval: ReturnType<typeof this.setInterval> = undefined;
+   private updateTimeout: ReturnType<typeof this.setTimeout> = undefined;
 
    private _wbecDevice: WbecDevice|null = null;
    private _wbecConfig: WbecConfigResponse|null = null;
@@ -78,7 +79,7 @@ class Wbec extends utils.Adapter {
     }
 
     private update(): void {
-        this.setTimeout(this.onInterval.bind(this), 1000);
+        this.updateTimeout = this.setTimeout(this.onInterval.bind(this), 1000);
     }
 
     private async onInterval(): Promise<void> {
@@ -278,6 +279,7 @@ class Wbec extends utils.Adapter {
         try {
             // Here you must clear all timeouts or intervals that may still be active
             this.clearInterval(this.requestInterval);
+            this.clearTimeout(this.updateTimeout);
 
             callback();
         } catch {

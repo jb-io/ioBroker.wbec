@@ -26,6 +26,7 @@ var import_wbecDevice = __toESM(require("./wbecDevice"));
 var import_lodash = __toESM(require("lodash"));
 class Wbec extends utils.Adapter {
   requestInterval = void 0;
+  updateTimeout = void 0;
   _wbecDevice = null;
   _wbecConfig = null;
   constructor(options = {}) {
@@ -72,7 +73,7 @@ class Wbec extends utils.Adapter {
     }
   }
   update() {
-    this.setTimeout(this.onInterval.bind(this), 1e3);
+    this.updateTimeout = this.setTimeout(this.onInterval.bind(this), 1e3);
   }
   async onInterval() {
     try {
@@ -250,6 +251,7 @@ class Wbec extends utils.Adapter {
   onUnload(callback) {
     try {
       this.clearInterval(this.requestInterval);
+      this.clearTimeout(this.updateTimeout);
       callback();
     } catch {
       callback();
