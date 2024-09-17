@@ -1,6 +1,6 @@
 {
   "name": "iobroker.wbec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Integration of Heidelberg WallBox Energy Control ESP8266",
   "author": {
     "name": "jb-io",
@@ -44,7 +44,7 @@
     "axios": "^1.7.7",
     "chai": "^4.5.0",
     "chai-as-promised": "^8.0.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.10.0",
     "lodash": "^4.17.21",
     "mocha": "^10.7.3",
     "proxyquire": "^2.1.3",
@@ -53,7 +53,7 @@
     "sinon-chai": "^3.7.0",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
-    "typescript": "~5.0.4"
+    "typescript": "~5.5.4"
   },
   "main": "build/main.js",
   "files": [
