@@ -208,3 +208,5 @@ export type ChargeLogEntry = {
     user: number
     box: number
 }
+
+export type ErrorHandler = (error: any) => void

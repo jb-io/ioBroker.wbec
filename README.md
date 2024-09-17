@@ -35,6 +35,9 @@ For more information and technical details, please visit the [Manufacturer’s w
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [TASK] Add error handling on external requests
+
 ### 0.1.0 (2024-09-08)
 * [TASK] initial release
 
