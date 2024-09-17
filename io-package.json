@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "[TASK] Add error handling on external requests\n[TASK] Update dependencies from dependabot",
+        "de": "[TASK] Fehlerbehandlung auf externen Anfragen hinzufügen\n[TASK] Abhängigkeiten von abhängigabot aktualisieren",
+        "ru": "[TASK] Добавить обработку ошибок по внешним запросам\n[TASK]",
+        "pt": "[TASK] Adicionar manipulação de erros em pedidos externos\n[TASK] Atualizar dependências de dependeabot",
+        "nl": "[TASK] Foutafhandeling toevoegen bij externe verzoeken\n[TASK] Update afhankelijkheden van dependabot",
+        "fr": "[TASK] Ajouter le traitement des erreurs sur les requêtes externes\n[TASK] Mise à jour des dépendances de dependabot",
+        "it": "[TASK] Aggiungi gestione degli errori sulle richieste esterne\n[TASK] Dipendenze di aggiornamento da dipendeabot",
+        "es": "[TASK] Agregue el manejo de errores en solicitudes externas\n[TASK] Actualizar las dependencias de dependabot",
+        "pl": "[TASK] Dodaj obsługę błędów na zewnętrznych żądaniach\n[TASK] Uaktualnij zależności od zależności",
+        "uk": "[TASK] Додавання обробки помилок на зовнішніх запитах\n[TASK] Оновлення залежності від залежності",
+        "zh-cn": "[TASK] 在外部请求中添加错误处理\n[TASK] 从属性更新依赖性"
+      },
       "0.1.0": {
         "en": "[TASK] initial release",
         "de": "[TASK] erste Veröffentlichung",
