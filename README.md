@@ -37,6 +37,7 @@ For more information and technical details, please visit the [Manufacturer’s w
 -->
 ### **WORK IN PROGRESS**
 * [TASK] Add error handling on external requests
+* [TASK] Update dependencies from dependabot
 
 ### 0.1.0 (2024-09-08)
 * [TASK] initial release
