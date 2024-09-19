@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "[TASK] Add admin link to wbec",
+        "de": "[TASK] Admin-Link zu wbec hinzufügen",
+        "ru": "[TASK] Добавить ссылку администратора на wbec",
+        "pt": "[TASK] Adicionar link de admin para wbec",
+        "nl": "[TASK] Admin link naar wbec toevoegen",
+        "fr": "[TASK] Ajouter un lien admin à wbec",
+        "it": "[TASK] Aggiungi link di amministrazione a wbec",
+        "es": "[TASK] Añadir enlace de administración a wbec",
+        "pl": "[TASK] Dodaj link admin do wbec",
+        "uk": "[TASK] Додати посилання адміністратора до wbec",
+        "zh-cn": "[TASK] 添加管理链接到 wbec"
+      },
       "0.1.1": {
         "en": "[TASK] Add error handling on external requests\n[TASK] Update dependencies from dependabot",
         "de": "[TASK] Fehlerbehandlung auf externen Anfragen hinzufügen\n[TASK] Abhängigkeiten von abhängigabot aktualisieren",
