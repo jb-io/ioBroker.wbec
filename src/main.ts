@@ -6,7 +6,7 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 
-// Load your modules here, e.g.:
+// Load your modules here:
 import WbecDevice from './wbecDevice';
 import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from './wbecDeviceTypes';
 import _ from 'lodash';
@@ -78,7 +78,7 @@ class Wbec extends utils.Adapter {
         this.update();
 
         for (let boxId: BoxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-            this.setTimeout(() => this.updateChargeLog(boxId), (3+boxId) * 1000);
+            this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3+boxId) * 1000);
         }
     }
 
