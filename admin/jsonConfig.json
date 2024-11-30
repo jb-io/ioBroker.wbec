@@ -19,6 +19,13 @@
                     "md": 2,
                     "type": "number",
                     "label": "request_interval"
+                },
+                "requestTimeout": {
+                    "xs": 12,
+                    "sm": 4,
+                    "md": 2,
+                    "type": "number",
+                    "label": "request_timeout"
                 }
             }
         },

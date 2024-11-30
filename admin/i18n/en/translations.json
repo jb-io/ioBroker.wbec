@@ -2,6 +2,7 @@
     "wbec adapter settings": "Adapter settings for wbec",
     "host": "Host",
     "request_interval": "Request Interval (sec)",
+    "request_timeout": "Request Timeout (ms)",
     "energy_meter_id": "Energy Meter ID",
     "general": "General",
     "energy_control": "Energy Control"

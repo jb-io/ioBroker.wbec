@@ -126,7 +126,8 @@
   "native": {
     "host": "",
     "interval": 120,
-    "energyMeterId": null
+    "energyMeterId": null,
+    "requestTimeout": 5000
   },
   "objects": [],
   "instanceObjects": [
