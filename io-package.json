@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "[BUGFIX] Allow configurable Timeout for requests",
+        "de": "[BUGFIX] Erlauben Sie konfigurierbares Timeout für Anfragen",
+        "ru": "[BUGFIX]",
+        "pt": "[BUGFIX] Permitir tempo configurável para pedidos",
+        "nl": "[BUGFIX] Configureerbare timeout voor verzoeken toestaan",
+        "fr": "[BUGFIX] Permettre un délai configurable pour les demandes",
+        "it": "[BUGFIX] Consentire Timeout configurabile per le richieste",
+        "es": "[BUGFIX] Permitir tiempo configurable para solicitudes",
+        "pl": "[BUGFIX] Pozwól na konfigurowalny czas oczekiwania",
+        "uk": "[BUGFIX] Дозволити налаштування часу для запитів",
+        "zh-cn": "[BUGFIX] 允许请求的可配置超时"
+      },
       "0.1.2": {
         "en": "[TASK] Add admin link to wbec",
         "de": "[TASK] Admin-Link zu wbec hinzufügen",
@@ -126,7 +139,8 @@
   "native": {
     "host": "",
     "interval": 120,
-    "energyMeterId": null
+    "energyMeterId": null,
+    "requestTimeout": 5000
   },
   "objects": [],
   "instanceObjects": [

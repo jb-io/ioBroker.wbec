@@ -39,5 +39,5 @@
     "license": "GNU GPLv3",
     "dependabot": "yes",
     "creatorVersion": "2.6.3",
-    "replay": "/home/joshua/Projects/ioBroker/.create-adapter.json"
+    "replay": "~/Projects/ioBroker/.create-adapter.json"
 }

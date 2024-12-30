@@ -54,7 +54,7 @@ class Wbec extends utils.Adapter {
       return;
     }
     try {
-      this._wbecDevice = new import_wbecDevice.default(this.config.host);
+      this._wbecDevice = new import_wbecDevice.default(this.config.host, this.config.requestTimeout);
       this._wbecDevice.setErrorHandler((error) => {
         this.log.error(error);
         this.setState("info.connection", false, true);

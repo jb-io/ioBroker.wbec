@@ -7,6 +7,7 @@ declare global {
             host: string;
             requestInterval: number;
             energyMeterId: string|null;
+            requestTimeout: number;
         }
     }
 }

@@ -12,11 +12,13 @@ import {
 
 export default class WbecDevice {
     private readonly _host: string;
+    private readonly _timeout: number;
     private _errorHandler: null|ErrorHandler = null;
     private _errorBubbling: boolean = true;
 
-    constructor(host: string) {
+    constructor(host: string, timeout: number) {
         this._host = host;
+        this._timeout = timeout;
     }
 
     public setErrorHandler(onError: null | ErrorHandler, errorBubbling: boolean = false): void {
@@ -31,7 +33,7 @@ export default class WbecDevice {
 
     private async requestGet<T>(uri: string, config?: axios.AxiosRequestConfig<any>): Promise<T> {
         return axios.get(`${this.host}${uri}`, {
-            timeout: 2000,
+            timeout: this._timeout,
             ...config,
         })
             .then(response => response.data)

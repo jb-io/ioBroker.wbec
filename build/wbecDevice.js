@@ -34,10 +34,12 @@ module.exports = __toCommonJS(wbecDevice_exports);
 var import_axios = __toESM(require("axios"));
 class WbecDevice {
   _host;
+  _timeout;
   _errorHandler = null;
   _errorBubbling = true;
-  constructor(host) {
+  constructor(host, timeout) {
     this._host = host;
+    this._timeout = timeout;
   }
   setErrorHandler(onError, errorBubbling = false) {
     this._errorHandler = onError;
@@ -48,7 +50,7 @@ class WbecDevice {
   }
   async requestGet(uri, config) {
     return import_axios.default.get(`${this.host}${uri}`, {
-      timeout: 2e3,
+      timeout: this._timeout,
       ...config
     }).then((response) => response.data).catch((reason) => {
       if (this._errorHandler) {
