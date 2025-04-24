@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "news": {
+      "0.1.4": {
+        "en": "[BUGFIX] Slow down initial requests to avoid wbec overload on adapter start",
+        "de": "[BUGFIX] Erstanforderungen verlangsamen, um Wbec-Überlastung auf Adapterstart zu vermeiden",
+        "ru": "[BUGFIX] Замедление начальных запросов во избежание перегрузки wbec при запуске адаптера",
+        "pt": "[BUGFIX] Abranda os pedidos iniciais para evitar sobrecarga wbec no início do adaptador",
+        "nl": "[BUGFIX] Vertragen eerste verzoeken om wbec overbelasting te voorkomen bij het starten van de adapter",
+        "fr": "[BUGFIX] Ralentir les demandes initiales pour éviter la surcharge wbec au démarrage de l'adaptateur",
+        "it": "[BUGFIX] Rallentare le richieste iniziali per evitare il sovraccarico di wbec sull'avvio dell'adattatore",
+        "es": "[BUGFIX] Reduzca las solicitudes iniciales para evitar la sobrecarga de wbec en el comienzo del adaptador",
+        "pl": "[BUGFIX] Spowolnić początkowe żądania, aby uniknąć przeciążenia wbec na początku adaptera",
+        "uk": "[BUGFIX] Повільнити початкові запити, щоб уникнути перевантаження wbec на старті адаптера",
+        "zh-cn": "[BUGFIX] 减慢初始请求以避免适配器启动时wbec超载"
+      },
       "0.1.3": {
         "en": "[BUGFIX] Allow configurable Timeout for requests",
         "de": "[BUGFIX] Erlauben Sie konfigurierbares Timeout für Anfragen",

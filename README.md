@@ -35,7 +35,7 @@ For more information and technical details, please visit the [Manufacturer’s w
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.4 (2025-04-24)
 * [BUGFIX] Slow down initial requests to avoid wbec overload on adapter start
 
 ### 0.1.3 (2024-11-30)
