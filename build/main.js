@@ -37,7 +37,7 @@ class Wbec extends utils.Adapter {
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.onStateChange.bind(this));
     this.on("unload", this.onUnload.bind(this));
-    this.update = import_lodash.default.throttle(this.update.bind(this), 1e3);
+    this.update = import_lodash.default.throttle(this.update.bind(this), this.config.requestTimeout);
   }
   get wbecDevice() {
     return this._wbecDevice;
@@ -73,7 +73,7 @@ class Wbec extends utils.Adapter {
     this.requestInterval = this.setInterval(this.onInterval.bind(this), this.config.requestInterval * 1e3);
     this.update();
     for (let boxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-      this.setTimeout(() => this.updateChargeLog(boxId), (3 + boxId) * 1e3);
+      this.setTimeout(() => this.updateChargeLog(boxId), (3 + boxId) * this.config.requestTimeout);
     }
   }
   update() {
@@ -190,7 +190,7 @@ class Wbec extends utils.Adapter {
         break;
       }
       case "chgStat": {
-        this.setTimeout(() => this.updateChargeLog(boxId), 1e3);
+        this.setTimeout(() => this.updateChargeLog(boxId), this.config.requestTimeout);
         break;
       }
     }

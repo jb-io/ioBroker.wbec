@@ -28,7 +28,7 @@ class Wbec extends utils.Adapter {
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
-        this.update = _.throttle(this.update.bind(this),1000);
+        this.update = _.throttle(this.update.bind(this),this.config.requestTimeout);
     }
 
 
@@ -78,7 +78,7 @@ class Wbec extends utils.Adapter {
         this.update();
 
         for (let boxId: BoxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-            this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3+boxId) * 1000);
+            this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3+boxId) * this.config.requestTimeout);
         }
     }
 
@@ -208,7 +208,7 @@ class Wbec extends utils.Adapter {
                 break;
             }
             case 'chgStat': {
-                this.setTimeout(() => this.updateChargeLog(boxId), 1000);
+                this.setTimeout(() => this.updateChargeLog(boxId), this.config.requestTimeout);
                 break;
             }
         }
