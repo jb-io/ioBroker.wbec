@@ -53,4 +53,4 @@ For more information and technical details, please visit the [Manufacturer’s w
 
 ## License
 
-[Licensed under GPLv3](LICENSE) Copyright (c) 2024 jb-io
+[Licensed under GPLv3](LICENSE) Copyright (c) 2025 jb-io
