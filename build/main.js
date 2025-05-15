@@ -111,6 +111,9 @@ class Wbec extends utils.Adapter {
               phases++;
             }
           }
+          if (phases) {
+            await this.setState(`box${boxKey}.phasesAvailable`, phases, true);
+          }
           await this.setState(`box${boxKey}.phases`, phases, true);
         }
       }
@@ -209,6 +212,9 @@ ${error}`);
       case "chgStat": {
         if (this._enableChargeLog) {
           this.setTimeout(() => this.updateChargeLog(boxId), this.config.maxRequestInterval);
+        }
+        if ((state == null ? void 0 : state.val) <= 3) {
+          await this.setState(`box${boxId}.phasesAvailable`, 1, true);
         }
         break;
       }
@@ -790,6 +796,16 @@ ${error}`);
         write: false
       }
     });
+    await this.extendObject(`${idPrefix}.phasesAvailable`, {
+      type: "state",
+      common: {
+        name: "Phasen verf\xFCgbar",
+        role: "value",
+        type: "number",
+        write: false
+      }
+    });
+    await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
     this.subscribeStates(`${idPrefix}.currLim`);
     this.subscribeStates(`${idPrefix}.chgStat`);
   }

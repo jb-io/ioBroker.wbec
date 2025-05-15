@@ -32,13 +32,15 @@ For more information and technical details, please visit the [Manufacturer’s w
 ## Open Tasks
 * Add message handler to receive `setCurrent` messages
 * Add message handler to receive `setPower` messages
-* Add new state that logs the max available phases for this charging session (required to properly handle `setPower` message)
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [FEATURE] Add `phasesAvailable` state that remains at last used phases
+
 ### 0.2.0 (2025-05-15)
 * [REFACTOR] Replace internal wbec client by separate library https://www.npmjs.com/package/wbec-client
 * [FEATURE] New maxRequestInterval parameter asserts that wbec is not flooded with requests
