@@ -38,6 +38,7 @@ class Wbec extends utils.Adapter {
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.onStateChange.bind(this));
     this.on("unload", this.onUnload.bind(this));
+    this.on("message", this.onMessage.bind(this));
     this.update = import_lodash.default.throttle(this.update.bind(this), this.config.maxRequestInterval);
   }
   get wbecDevice() {
@@ -201,12 +202,7 @@ ${error}`);
   async onBoxStateChange(boxId, parameter, state) {
     switch (parameter) {
       case "currLim": {
-        try {
-          await this.wbecDevice.setCurrentLimit(boxId, state.val * 10);
-        } catch (error) {
-          this.log.error(`Error while setting current limit for Box: ${boxId} to ${state.val}
-${error}`);
-        }
+        await this.setBoxCurrLim(boxId, state.val);
         break;
       }
       case "chgStat": {
@@ -283,6 +279,36 @@ ${error}`);
     } else {
       this.log.debug(`state ${id} deleted`);
       this.setTimeout(this.createStates.bind(this), 1e3);
+    }
+  }
+  async onMessage(obj) {
+    if (obj) {
+      switch (obj.command) {
+        case "setCurrLim":
+          if (typeof obj.message.id === "undefined") {
+            this.log.warn('No value "id" found in message');
+            return;
+          }
+          if (typeof obj.message.currLim === "undefined") {
+            this.log.warn('No value "currLim" found in message');
+            return;
+          }
+          const boxId = obj.message.id;
+          const currLim = obj.message.currLim;
+          this.log.debug(`Received setCurrent message (id=${boxId}, currLim=${currLim})`);
+          await this.setBoxCurrLim(boxId, currLim);
+          break;
+        default:
+          this.log.warn(`Received unknown message: ${obj.command}`);
+      }
+    }
+  }
+  async setBoxCurrLim(boxId, current) {
+    try {
+      await this.wbecDevice.setCurrentLimit(boxId, current * 10);
+    } catch (error) {
+      this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}
+${error}`);
     }
   }
   /**

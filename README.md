@@ -29,8 +29,23 @@ The WBEC Controller is developed by Stefan Ferstl [steff393](https://github.com/
 
 For more information and technical details, please visit the [Manufacturer’s website](https://steff393.github.io/wbec-site/).
 
+## Messages
+
+### setCurrent
+Sets the current limit for a charging box directly without modifying adapter states.
+
+**Parameters:**
+- `id`: Box ID (0-15)
+- `currLim`: Current limit in ampere
+
+**Example:**
+```javascript 
+// Set charging current to 16A for box 0 
+sendTo('wbec.0', 'setCurrLim', { id: 0, currLim: 16 });
+```
+
+
 ## Open Tasks
-* Add message handler to receive `setCurrent` messages
 * Add message handler to receive `setPower` messages
 
 ## Changelog
@@ -40,6 +55,7 @@ For more information and technical details, please visit the [Manufacturer’s w
 -->
 ### **WORK IN PROGRESS**
 * [FEATURE] Add `phasesAvailable` state that remains at last used phases
+* [FEATURE] Add `setCurrent` message handler to allow setting currLim for box without modifying states.
 
 ### 0.2.0 (2025-05-15)
 * [REFACTOR] Replace internal wbec client by separate library https://www.npmjs.com/package/wbec-client

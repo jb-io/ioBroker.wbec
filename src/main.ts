@@ -29,6 +29,7 @@ class Wbec extends utils.Adapter {
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
+        this.on('message', this.onMessage.bind(this));
 
         this.update = _.throttle(this.update.bind(this), this.config.maxRequestInterval);
     }
@@ -215,11 +216,7 @@ class Wbec extends utils.Adapter {
     private async onBoxStateChange(boxId: BoxId, parameter: keyof Box, state: ioBroker.State): Promise<void> {
         switch (parameter) {
             case 'currLim': {
-                try {
-                    await this.wbecDevice.setCurrentLimit(boxId, (state.val as number) * 10);
-                } catch (error) {
-                    this.log.error(`Error while setting current limit for Box: ${boxId} to ${state.val}\n${error}`);
-                }
+                await this.setBoxCurrLim(boxId, state.val as number);
                 break;
             }
             case 'chgStat': {
@@ -302,6 +299,40 @@ class Wbec extends utils.Adapter {
             // The state was deleted
             this.log.debug(`state ${id} deleted`);
             this.setTimeout(this.createStates.bind(this), 1000);
+        }
+    }
+
+    private async onMessage(obj: ioBroker.Message): Promise<void> {
+        if (obj) {
+            switch (obj.command) {
+                case 'setCurrLim':
+                    if (typeof obj.message.id === 'undefined') {
+                        this.log.warn('No value "id" found in message');
+                        return;
+                    }
+                    if (typeof obj.message.currLim === 'undefined') {
+                        this.log.warn('No value "currLim" found in message');
+                        return;
+                    }
+
+                    const boxId = obj.message.id as BoxId;
+                    const currLim = obj.message.currLim as number;
+                    this.log.debug(`Received setCurrent message (id=${boxId}, currLim=${currLim})`);
+                    await this.setBoxCurrLim(boxId, currLim);
+
+                    break;
+
+                default:
+                    this.log.warn(`Received unknown message: ${obj.command}`);
+            }
+        }
+    }
+
+    private async setBoxCurrLim(boxId: BoxId, current: number): Promise<void> {
+        try {
+            await this.wbecDevice.setCurrentLimit(boxId, current * 10);
+        } catch (error) {
+            this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}\n${error}`);
         }
     }
 
