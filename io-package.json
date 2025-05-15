@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "[REFACTOR] Replace internal wbec client by separate library https://www.npmjs.com/package/wbec-client\n[FEATURE] New maxRequestInterval parameter asserts that wbec is not flooded with requests\n[BUGFIX] charge logs only get requested if enabled on wbec config",
+        "de": "[REFACTOR] Ersetzen Sie internen wbec-Client durch separate Bibliothek http://www.npmjs.com/package/wbec-client\n(STÖHNT) Neue maxRequestInterval-Parameter behauptet, dass wbec nicht mit Anfragen geflutet wird\n[BUGFIX] Ladeprotokolle werden nur angefordert, wenn auf wbec config aktiviert",
+        "ru": "Заменить внутренний клиент wbec отдельной библиотекой https://www.npmjs.com/package/wbec-client\n[ФИАТУРА] Новый параметр maxRequestInterval утверждает, что wbec не заполняется запросами\n[BUGFIX] журналы зарядки запрашиваются только при включении на wbec-конфигурации",
+        "pt": "Substituir o cliente interno do wbec por biblioteca separada http://www.npmjs.com/package/wbec-client\n[FEATURE] Novo parâmetro maxRequestInterval afirma que wbec não é inundado com pedidos\n[BUGFIX] registros de carga só são solicitados se ativados em wbec config",
+        "nl": "[REFACTOR] Vervang interne wbec client door aparte bibliotheek https://www.npmjs.com/package/wbec-client\n[FEATURE] Nieuwe maxRequestInterval parameter beweert dat wbec niet is overspoeld met verzoeken\n[BUGFIX] laadlogs worden alleen opgevraagd indien ingeschakeld op wbec-configuratie",
+        "fr": "[REFACTOR] Remplacer le client interne wbec par une bibliothèque séparée https://www.npmjs.com/package/wbec-client\n[FÉATURE] Le nouveau paramètre maxRequestInterval affirme que wbec n'est pas inondé de requêtes\n[BUGFIX] les journaux de charge ne sont demandés que si activé sur wbec config",
+        "it": "[REFACTOR] Sostituisci client wbec interno tramite libreria separata https://www.npmjs.com/package/wbec-client\n[FEATURE] Il nuovo parametro maxRequestInterval afferma che wbec non è inondato di richieste\n[BUGFIX] registri di carica solo ottenere richiesto se abilitato su wbec config",
+        "es": "[REFACTOR] Reemplazar cliente wbec interno por biblioteca separada https://www.npmjs.com/package/wbec-client\n[FEATURA] Nuevo parámetro maxRequestInterval afirma que wbec no se inunda con solicitudes\n[BUGFIX] registros de carga sólo se solicitan si se activa en wbec config",
+        "pl": "[REFACTOR] Zastąp klienta wewnętrznego wbec oddzielną biblioteką https: / / www.npmjs.com / package / wbec- client\n[FEATURE] Nowy parametr maxRequestInterval twierdzi, że wbec nie jest zalany żądaniami\n[BUGFIX] dzienniki opłat tylko uzyskać, jeśli włączone na wbec config",
+        "uk": "[REFACTOR] Замініть внутрішній клієнт wbec за окремою бібліотекою https://www.npmjs.com/package/wbec-client\n[Життя] Новий параметр maxRequestInterval стверджує, що wbec не затоплюється з запитами\n[BUGFIX] журнали заряду тільки отримати запит, якщо ввімкнено налаштування wbec",
+        "zh-cn": "[REFACTOR] 将内部的wbec客户端替换为单独的库 https://www.npmjs.com/package/wbec-client 互联网档案馆的存檔,存档日期2013-12-21\n[颤 新建最大请求Interval参数, 表示wbec没有被请求淹没\n[BUGFIX] 充电日志只有在使用 wbec 配置时才会被请求"
+      },
       "0.1.4": {
         "en": "[BUGFIX] Slow down initial requests to avoid wbec overload on adapter start",
         "de": "[BUGFIX] Erstanforderungen verlangsamen, um Wbec-Überlastung auf Adapterstart zu vermeiden",
