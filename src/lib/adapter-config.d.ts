@@ -8,6 +8,7 @@ declare global {
             requestInterval: number;
             energyMeterId: string|null;
             requestTimeout: number;
+            maxRequestInterval: number;
         }
     }
 }

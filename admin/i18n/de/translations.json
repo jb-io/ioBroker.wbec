@@ -3,6 +3,7 @@
     "host": "Host",
     "request_interval": "Abfrage Interval (sek)",
     "request_timeout": "Abfrage Timeout (ms)",
+    "max_request_interval": "Zeit zwischen zwei Requests (ms)",
     "energy_meter_id": "ID des Energiezählers",
     "general": "Allgemein",
     "energy_control": "Energiemanagement"

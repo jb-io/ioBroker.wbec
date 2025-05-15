@@ -7,17 +7,19 @@
 import * as utils from '@iobroker/adapter-core';
 
 // Load your modules here:
-import WbecDevice from './wbecDevice';
-import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from './wbecDeviceTypes';
+import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from 'wbec-client/dist/types';
 import _ from 'lodash';
+import {WbecClient} from 'wbec-client/dist/wbec-client';
 
 class Wbec extends utils.Adapter {
 
-   private requestInterval: ReturnType<typeof this.setInterval> = undefined;
-   private updateTimeout: ReturnType<typeof this.setTimeout> = undefined;
+    private requestInterval: ReturnType<typeof this.setInterval> = undefined;
+    private updateTimeout: ReturnType<typeof this.setTimeout> = undefined;
 
-   private _wbecDevice: WbecDevice|null = null;
-   private _wbecConfig: WbecConfigResponse|null = null;
+    private _wbecDevice: WbecClient | null = null;
+    private _wbecConfig: WbecConfigResponse | null = null;
+
+    private _enableChargeLog: boolean = false;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -28,12 +30,11 @@ class Wbec extends utils.Adapter {
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
-        this.update = _.throttle(this.update.bind(this),this.config.requestTimeout);
+        this.update = _.throttle(this.update.bind(this), this.config.maxRequestInterval);
     }
 
-
-    get wbecDevice(): WbecDevice {
-        return this._wbecDevice as WbecDevice;
+    get wbecDevice(): WbecClient {
+        return this._wbecDevice as WbecClient;
     }
 
     get wbecConfig(): WbecConfigResponse {
@@ -44,9 +45,7 @@ class Wbec extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     private async onReady(): Promise<void> {
-        // Initialize your adapter here
 
-        // Reset the connection indicator during startup
         await this.setState('info.connection', false, true);
 
         if (!this.config.host) {
@@ -55,20 +54,15 @@ class Wbec extends utils.Adapter {
 
         // Get wbec config or return on error
         try {
-            this._wbecDevice = new WbecDevice(this.config.host, this.config.requestTimeout);
-            this._wbecDevice.setErrorHandler((error) => {
-                this.log.error(error);
-                this.setState('info.connection', false, true);
-            })
+            this._wbecDevice = new WbecClient(this.config.host, {
+                timeout: this.config.requestTimeout,
+                maxRequestInterval: this.config.maxRequestInterval
+            });
             this._wbecConfig = await this.wbecDevice.requestConfig();
+            this._enableChargeLog = !!(this._wbecConfig.cfgChargeLog || 0);
         } catch (e) {
             this.log.error(`${e}`);
             return;
-        }
-
-        if (this.config.energyMeterId) {
-            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this),this.wbecConfig.cfgPvCycleTime*1000);
-            this.subscribeForeignStates(this.config.energyMeterId);
         }
 
         await this.createConfigStates();
@@ -77,8 +71,15 @@ class Wbec extends utils.Adapter {
         this.requestInterval = this.setInterval(this.onInterval.bind(this), this.config.requestInterval * 1000);
         this.update();
 
-        for (let boxId: BoxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-            this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3+boxId) * this.config.requestTimeout);
+        if (this.config.energyMeterId) {
+            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this), this.wbecConfig.cfgPvCycleTime * 1000);
+            this.subscribeForeignStates(this.config.energyMeterId);
+        }
+
+        if (this._enableChargeLog) {
+            for (let boxId: BoxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
+                this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3 + boxId) * this.config.maxRequestInterval);
+            }
         }
     }
 
@@ -133,21 +134,28 @@ class Wbec extends utils.Adapter {
                 await this.setState(`pv.${key}`, val, true);
             }
             for (const key in response.wifi) {
-                const val = response.wifi[key as keyof  typeof response.wifi] as ioBroker.StateValue;
+                const val = response.wifi[key as keyof typeof response.wifi] as ioBroker.StateValue;
                 await this.setState(`wifi.${key}`, val, true);
             }
             for (const key in response.modbus.state) {
-                const val = response.modbus.state[key as keyof  typeof response.modbus.state] as ioBroker.StateValue;
+                const val = response.modbus.state[key as keyof typeof response.modbus.state] as ioBroker.StateValue;
                 await this.setState(`modbus.state.${key}`, val, true);
             }
-        } catch {
+        } catch (error) {
             await this.setState('info.connection', false, true);
+            this.log.error(`Error while updating data:\n${error}`);
         }
     }
 
     private async updateChargeLog(boxId: BoxId): Promise<void> {
         this.log.debug(`Update charge log for Box: ${boxId}`);
-        const chargeLog = await this.wbecDevice.requestChargeLog(boxId, 10);
+        let chargeLog;
+        try {
+            chargeLog = await this.wbecDevice.requestChargeLog(boxId, 10);
+        } catch (error) {
+            this.log.error(`Error while updating charge log for Box: ${boxId}\n${error}`);
+            return;
+        }
 
         const chargeLogPrefix = `box${boxId}.chargeLog`;
         await this.delObjectAsync(chargeLogPrefix, {recursive: true});
@@ -156,7 +164,7 @@ class Wbec extends utils.Adapter {
         for (const line of chargeLog.line) {
             const idPrefix = `${chargeLogPrefix}.${index--}`;
 
-            await this.extendObject(idPrefix+ '.timestamp', {
+            await this.extendObject(idPrefix + '.timestamp', {
                 type: 'state',
                 common: {
                     name: 'Zeitstempel',
@@ -164,9 +172,9 @@ class Wbec extends utils.Adapter {
                     role: 'timestamp',
                     write: false,
                 }
-            }).then(() => this.setState(idPrefix+'.timestamp', line.timestamp, true));
+            }).then(() => this.setState(idPrefix + '.timestamp', line.timestamp, true));
 
-            await this.extendObject(idPrefix+ '.duration', {
+            await this.extendObject(idPrefix + '.duration', {
                 type: 'state',
                 common: {
                     name: 'Ladedauer',
@@ -175,9 +183,9 @@ class Wbec extends utils.Adapter {
                     unit: 's',
                     write: false,
                 }
-            }).then(() => this.setState(idPrefix+'.duration', line.duration, true));
+            }).then(() => this.setState(idPrefix + '.duration', line.duration, true));
 
-            await this.extendObject(idPrefix+ '.energy', {
+            await this.extendObject(idPrefix + '.energy', {
                 type: 'state',
                 common: {
                     name: 'Lademenge',
@@ -186,9 +194,9 @@ class Wbec extends utils.Adapter {
                     unit: 'Wh',
                     write: false,
                 }
-            }).then(() => this.setState(idPrefix+'.energy', line.energy, true));
+            }).then(() => this.setState(idPrefix + '.energy', line.energy, true));
 
-            await this.extendObject(idPrefix+ '.user', {
+            await this.extendObject(idPrefix + '.user', {
                 type: 'state',
                 common: {
                     name: 'Benutzer',
@@ -196,7 +204,7 @@ class Wbec extends utils.Adapter {
                     role: 'value',
                     write: false,
                 }
-            }).then(() => this.setState(idPrefix+'.user', line.user, true));
+            }).then(() => this.setState(idPrefix + '.user', line.user, true));
         }
 
     }
@@ -204,11 +212,17 @@ class Wbec extends utils.Adapter {
     private async onBoxStateChange(boxId: BoxId, parameter: keyof Box, state: ioBroker.State): Promise<void> {
         switch (parameter) {
             case 'currLim': {
-                await this.wbecDevice.setCurrentLimit(boxId, (state.val as number) * 10);
+                try {
+                    await this.wbecDevice.setCurrentLimit(boxId, (state.val as number) * 10);
+                } catch (error) {
+                    this.log.error(`Error while setting current limit for Box: ${boxId} to ${state.val}\n${error}`);
+                }
                 break;
             }
             case 'chgStat': {
-                this.setTimeout(() => this.updateChargeLog(boxId), this.config.requestTimeout);
+                if (this._enableChargeLog) {
+                    this.setTimeout(() => this.updateChargeLog(boxId), this.config.maxRequestInterval);
+                }
                 break;
             }
         }
@@ -216,25 +230,34 @@ class Wbec extends utils.Adapter {
 
     private async onPvStateChange(parameter: keyof Pv, state: ioBroker.State): Promise<void> {
         const value = state.val;
-        switch (parameter) {
-            case 'mode': {
-                await this.wbecDevice.setPvValue({pvMode: value as PvMode});
-                break;
+        try {
+            switch (parameter) {
+                case 'mode': {
+                    await this.wbecDevice.setPvValue({pvMode: value as PvMode});
+                    break;
+                }
+                case 'watt': {
+                    await this.wbecDevice.setPvValue({pvWatt: value as number});
+                    break;
+                }
+                case 'wbId': {
+                    await this.wbecDevice.setPvValue({pvWbId: value as BoxId});
+                    break;
+                }
             }
-            case 'watt': {
-                await this.wbecDevice.setPvValue({pvWatt: value as number});
-                break;
-            }
-            case 'wbId': {
-                await this.wbecDevice.setPvValue({pvWbId: value as BoxId});
-                break;
-            }
+        } catch (error) {
+            this.log.error(`Error while setting pv value for parameter: ${parameter} to ${value}\n${error}`);
         }
     }
 
     private async onEnergyMeterChange(state: ioBroker.State): Promise<void> {
         if (state.ack && null !== state.val) {
-            this.log.info(JSON.stringify(await this.wbecDevice.setPvValue({pvWatt: +state.val})));
+            try {
+                const wbecPvResponse = await this.wbecDevice.setPvValue({pvWatt: +state.val});
+                this.log.info(JSON.stringify(wbecPvResponse));
+            } catch (error) {
+                this.log.error(`Error while setting pv value for parameter: watt} to ${state.val}\n${error}`);
+            }
         }
     }
 
@@ -326,9 +349,9 @@ class Wbec extends utils.Adapter {
         }
         await Promise.all(initPromises);
     }
+
     private async createWbecStates(): Promise<any> {
-        let idPrefix = '';
-        idPrefix = 'wbec';
+        let idPrefix: string = 'wbec';
         await this.extendObject(idPrefix, {
             type: 'device'
         });
@@ -511,6 +534,7 @@ class Wbec extends utils.Adapter {
             }
         })
     }
+
     private async createBoxStates(boxId: number): Promise<any> {
         const idPrefix = `box${boxId}`;
         await this.extendObject(idPrefix, {

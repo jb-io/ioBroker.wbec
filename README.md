@@ -29,12 +29,21 @@ The WBEC Controller is developed by Stefan Ferstl [steff393](https://github.com/
 
 For more information and technical details, please visit the [Manufacturer’s website](https://steff393.github.io/wbec-site/).
 
+## Open Tasks
+* Add message handler to receive `setCurrent` messages
+* Add message handler to receive `setPower` messages
+* Add new state that logs the max available phases for this charging session (required to properly handle `setPower` message)
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [REFACTOR] Replace internal wbec client by separate library https://www.npmjs.com/package/wbec-client
+* [FEATURE] New maxRequestInterval parameter asserts that wbec is not flooded with requests
+* [BUGFIX] charge logs only get requested if enabled on wbec config 
+
 ### 0.1.4 (2025-04-24)
 * [BUGFIX] Slow down initial requests to avoid wbec overload on adapter start
 
