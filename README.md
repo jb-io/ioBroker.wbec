@@ -44,9 +44,22 @@ Sets the current limit for a charging box directly without modifying adapter sta
 sendTo('wbec.0', 'setCurrLim', { id: 0, currLim: 16 });
 ```
 
+### setPowerTarget
+Sets the current limit depending on phases and voltage to match the target power.
+
+**Parameters:**
+- `id`: Box ID (0-15)
+- `powerTarget`: Power in watt
+
+**Example:**
+```javascript 
+// Set charging power to 3600W for box 0 
+sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
+```
 
 ## Open Tasks
-* Add message handler to receive `setPower` messages
+* Filter onStateChange events to avoid handling on unchanged values
+* Add further debug logging
 
 ## Changelog
 <!--
@@ -54,6 +67,7 @@ sendTo('wbec.0', 'setCurrLim', { id: 0, currLim: 16 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [FEATURE] Add message handler to receive `setPowerTarget` messages
 * [FEATURE] Add `phasesAvailable` state that remains at last used phases
 * [FEATURE] Add `setCurrent` message handler to allow setting currLim for box without modifying states.
 

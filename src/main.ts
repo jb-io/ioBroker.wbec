@@ -11,6 +11,13 @@ import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from 'wbec-client/dist/types
 import _ from 'lodash';
 import {WbecClient} from 'wbec-client/dist/wbec-client';
 
+interface BoxStates extends Box {
+    chgStat: number,
+    powerTarget: number,
+    phases: number,
+    phasesAvailable: number,
+}
+
 class Wbec extends utils.Adapter {
 
     private requestInterval: ReturnType<typeof this.setInterval> = undefined;
@@ -213,22 +220,24 @@ class Wbec extends utils.Adapter {
 
     }
 
-    private async onBoxStateChange(boxId: BoxId, parameter: keyof Box, state: ioBroker.State): Promise<void> {
-        switch (parameter) {
-            case 'currLim': {
-                await this.setBoxCurrLim(boxId, state.val as number);
-                break;
-            }
-            case 'chgStat': {
-                if (this._enableChargeLog) {
-                    this.setTimeout(() => this.updateChargeLog(boxId), this.config.maxRequestInterval);
-                }
-                if ((state?.val as number) <= 3) {
-                    await this.setState(`box${boxId}.phasesAvailable`, 1, true);
-                }
-                break;
-            }
+    private async onBoxStateChange(boxId: BoxId, parameter: keyof BoxStates, ack: boolean, state: ioBroker.State): Promise<boolean> {
+        if (parameter === 'currLim' && !ack) {
+            await this.setState(`box${boxId}.powerTarget`, null, true);
+            await this.setBoxCurrLim(boxId, state.val as number);
+            return true;
+        } else if ((parameter === 'powerTarget' && !ack) || (parameter === 'phasesAvailable')) {
+            await this.recalculatePowerTarget(boxId);
+            return true;
+        // } else if (parameter === 'chgStat') {
+        //     if (this._enableChargeLog) {
+        //         await this.updateChargeLog(boxId);
+        //     }
+        //     if ((state?.val as number) <= 3) {
+        //         await this.setState(`box${boxId}.phasesAvailable`, 1, true);
+        //     }
+        //     return true;
         }
+        return false;
     }
 
     private async onPvStateChange(parameter: keyof Pv, state: ioBroker.State): Promise<void> {
@@ -256,7 +265,7 @@ class Wbec extends utils.Adapter {
     private async onEnergyMeterChange(state: ioBroker.State): Promise<void> {
         if (state.ack && null !== state.val) {
             try {
-                const wbecPvResponse = await this.wbecDevice.setPvValue({pvWatt: +state.val});
+                const wbecPvResponse = await this.wbecDevice.setPvValue({pvWatt: + state.val});
                 this.log.info(JSON.stringify(wbecPvResponse));
             } catch (error) {
                 this.log.error(`Error while setting pv value for parameter: watt} to ${state.val}\n${error}`);
@@ -268,42 +277,47 @@ class Wbec extends utils.Adapter {
      * Is called if a subscribed state changes
      */
     private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
-        if (state) {
-            if (id === this.config.energyMeterId) {
-                await this.onEnergyMeterChange(state);
-                return;
-            }
-            // The state was changed
-            if (state.ack) {
-                return;
-            }
-
-            const boxExpressionMatch = id.match(/.box(\d+).(\w+)$/);
-            if (boxExpressionMatch && boxExpressionMatch.length > 0) {
-                const boxId = parseInt(boxExpressionMatch[1]) as BoxId;
-                const parameter = boxExpressionMatch[2] as keyof Box;
-                await this.onBoxStateChange(boxId, parameter, state);
-                this.update();
-                return;
-            }
-
-            const pvExpressionMatch = id.match(/.pv.(\w+)$/);
-            if (pvExpressionMatch && pvExpressionMatch.length > 0) {
-                const parameter = pvExpressionMatch[1] as keyof Pv;
-                await this.onPvStateChange(parameter, state);
-                this.update();
-                return;
-            }
-
-        } else {
+        if (!state) {
             // The state was deleted
             this.log.debug(`state ${id} deleted`);
             this.setTimeout(this.createStates.bind(this), 1000);
+            return ;
         }
+
+        if (id === this.config.energyMeterId) {
+            await this.onEnergyMeterChange(state);
+            return;
+        }
+
+        const ack = state.ack;
+
+        const boxExpressionMatch = id.match(/.box(\d+).(\w+)$/);
+        if (boxExpressionMatch && boxExpressionMatch.length > 0) {
+            const boxId = parseInt(boxExpressionMatch[1]) as BoxId;
+            const parameter = boxExpressionMatch[2] as keyof Box;
+            if (await this.onBoxStateChange(boxId, parameter, ack, state)) {
+                this.update();
+            }
+            return;
+        }
+
+        if (ack) {
+            return;
+        }
+
+        const pvExpressionMatch = id.match(/.pv.(\w+)$/);
+        if (pvExpressionMatch && pvExpressionMatch.length > 0) {
+            const parameter = pvExpressionMatch[1] as keyof Pv;
+            await this.onPvStateChange(parameter, state);
+            this.update();
+            return;
+        }
+
     }
 
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (obj) {
+            let boxId: BoxId;
             switch (obj.command) {
                 case 'setCurrLim':
                     if (typeof obj.message.id === 'undefined') {
@@ -315,12 +329,32 @@ class Wbec extends utils.Adapter {
                         return;
                     }
 
-                    const boxId = obj.message.id as BoxId;
+                    boxId = obj.message.id as BoxId;
                     const currLim = obj.message.currLim as number;
                     this.log.debug(`Received setCurrent message (id=${boxId}, currLim=${currLim})`);
+
+                    await this.setState(`box${boxId}.powerTarget`, null, true);
                     await this.setBoxCurrLim(boxId, currLim);
 
-                    break;
+                    return;
+                case 'setPowerTarget':
+                    if (typeof obj.message.id === 'undefined') {
+                        this.log.warn('No value "id" found in message');
+                        return;
+                    }
+                    if (typeof obj.message.powerTarget === 'undefined') {
+                        this.log.warn('No value "powerTarget" found in message');
+                        return;
+                    }
+
+                    boxId = obj.message.id as BoxId;
+                    const powerTarget = obj.message.powerTarget as number;
+                    this.log.debug(`Received setCurrent message (id=${boxId}, powerTarget=${powerTarget})`);
+
+                    await this.setState(`box${boxId}.powerTarget`, null, true);
+                    await this.recalculatePowerTarget(boxId);
+
+                    return;
 
                 default:
                     this.log.warn(`Received unknown message: ${obj.command}`);
@@ -334,6 +368,27 @@ class Wbec extends utils.Adapter {
         } catch (error) {
             this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}\n${error}`);
         }
+    }
+
+    private async recalculatePowerTarget(boxId: BoxId): Promise<void> {
+        const phases = (await this.getStateAsync(`box${boxId}.phasesAvailable`))?.val as number;
+        const powerTarget = (await this.getStateAsync(`box${boxId}.powerTarget`))?.val as number|null;
+
+        if (null === powerTarget) {
+            return;
+        }
+
+        const voltages = [
+            (await this.getStateAsync(`box${boxId}.voltL1`))?.val as number,
+            (await this.getStateAsync(`box${boxId}.voltL2`))?.val as number,
+            (await this.getStateAsync(`box${boxId}.voltL3`))?.val as number,
+        ].filter(v => v !== undefined);
+        const avgVolt = voltages.reduce((a, b) => a + b, 0) / (voltages.length || 1);
+
+        const currLim = (!avgVolt || !phases) ? 0 : powerTarget / phases / avgVolt;
+        this.log.debug(`Recalculating power target for Box: ${boxId} to ${currLim}A, avgVolt=${avgVolt}V, powerTarget=${powerTarget}W, phases=${phases}`);
+        await this.setState(`box${boxId}.powerTarget`, powerTarget, true);
+        await this.setBoxCurrLim(boxId, currLim);
     }
 
     /**
@@ -699,6 +754,16 @@ class Wbec extends utils.Adapter {
                 unit: 'W',
             }
         })
+        await this.extendObject(`${idPrefix}.powerTarget`, {
+            type: 'state',
+            common: {
+                name: 'Power Target',
+                type: 'number',
+                write: true,
+                role: 'value.power',
+                unit: 'W',
+            }
+        })
         await this.extendObject(`${idPrefix}.energyP`, {
             type: 'state',
             common: {
@@ -865,10 +930,14 @@ class Wbec extends utils.Adapter {
                 write: false,
             }
         })
+
+        await this.setState(`${idPrefix}.powerTarget`, null, true);
         await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
 
         this.subscribeStates(`${idPrefix}.currLim`);
         this.subscribeStates(`${idPrefix}.chgStat`);
+        this.subscribeStates(`${idPrefix}.powerTarget`);
+        this.subscribeStates(`${idPrefix}.phasesAvailable`);
     }
 
 }
