@@ -255,7 +255,7 @@ class Wbec extends utils.Adapter {
                 break;
 
             case 'chgStat':
-                if (newState.val !== oldState?.val) {
+                if (oldState && newState.val !== oldState?.val) {
                     if (this._enableChargeLog) {
                         await this.updateChargeLog(boxId);
                     }
