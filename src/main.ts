@@ -58,6 +58,7 @@ class Wbec extends utils.Adapter {
         await this.setState('info.connection', false, true);
 
         if (!this.config.host) {
+            this.log.error(`Exit because host is not configured`);
             return;
         }
 
@@ -67,7 +68,10 @@ class Wbec extends utils.Adapter {
                 timeout: this.config.requestTimeout,
                 maxRequestInterval: this.config.maxRequestInterval
             });
+            this.log.debug(`Request wbec config`);
             this._wbecConfig = await this.wbecDevice.requestConfig();
+            this.log.debug(`Received wbec config`);
+            this.log.silly(`wbec config:\n${JSON.stringify(this._wbecConfig, null, 2)}`);
             this._enableChargeLog = !!(this._wbecConfig.cfgChargeLog || 0);
         } catch (e) {
             this.log.error(`${e}`);
@@ -98,7 +102,10 @@ class Wbec extends utils.Adapter {
 
     private async onInterval(): Promise<void> {
         try {
+            this.log.debug('Request json data from wbecDevice');
             const response = await this.wbecDevice.requestJson();
+            this.log.debug('Received json data from wbecDevice for boxes: ' + Object.keys(response.box).join(','));
+            this.log.silly(`wbec json data:\n${JSON.stringify(response, null, 2)}`);
 
             await this.setState('info.connection', true, true);
 
@@ -160,10 +167,12 @@ class Wbec extends utils.Adapter {
     }
 
     private async updateChargeLog(boxId: BoxId): Promise<void> {
-        this.log.debug(`Update charge log for Box: ${boxId}`);
         let chargeLog;
         try {
+            this.log.debug(`Request charge log for Box: ${boxId}`);
             chargeLog = await this.wbecDevice.requestChargeLog(boxId, 10);
+            this.log.debug(`Received charge log for Box: ${boxId}`);
+            this.log.silly(`Charge log for Box: ${boxId}:\n${JSON.stringify(chargeLog, null, 2)}`);
         } catch (error) {
             this.log.error(`Error while updating charge log for Box: ${boxId}\n${error}`);
             return;
@@ -266,15 +275,24 @@ class Wbec extends utils.Adapter {
         try {
             switch (parameter) {
                 case 'mode': {
-                    await this.wbecDevice.setPvValue({pvMode: value as PvMode});
+                    this.log.debug(`Set pv value "${parameter}" to ${value}`);
+                    const response = await this.wbecDevice.setPvValue({pvMode: value as PvMode});
+                    this.log.debug(`Received pv response`);
+                    this.log.silly(`pv response:\n${JSON.stringify(response, null, 2)}`);
                     return true;
                 }
                 case 'watt': {
-                    await this.wbecDevice.setPvValue({pvWatt: value as number});
+                    this.log.debug(`Set pv value "${parameter}" to ${value}`);
+                    const response = await this.wbecDevice.setPvValue({pvWatt: value as number});
+                    this.log.debug(`Received pv response`);
+                    this.log.silly(`pv response:\n${JSON.stringify(response, null, 2)}`);
                     return true;
                 }
                 case 'wbId': {
-                    await this.wbecDevice.setPvValue({pvWbId: value as BoxId});
+                    this.log.debug(`Set pv value "${parameter}" to ${value}`);
+                    const response = await this.wbecDevice.setPvValue({pvWbId: value as BoxId});
+                    this.log.debug(`Received pv response`);
+                    this.log.silly(`pv response:\n${JSON.stringify(response, null, 2)}`);
                     return true;
                 }
             }
@@ -287,8 +305,10 @@ class Wbec extends utils.Adapter {
     private async onEnergyMeterChange(state: ioBroker.State): Promise<void> {
         if (state.ack && null !== state.val) {
             try {
+                this.log.debug(`Set pv value "pvWatt" to ${state.val} due to energy meter change`);
                 const wbecPvResponse = await this.wbecDevice.setPvValue({pvWatt: + state.val});
-                this.log.info(JSON.stringify(wbecPvResponse));
+                this.log.debug(`Received pv response`);
+                this.log.silly(`pv response:\n${JSON.stringify(wbecPvResponse, null, 2)}`);
             } catch (error) {
                 this.log.error(`Error while setting pv value for parameter: watt} to ${state.val}\n${error}`);
             }
@@ -412,9 +432,10 @@ class Wbec extends utils.Adapter {
 
     private async setBoxCurrLim(boxId: BoxId, current: number): Promise<void> {
         try {
-            this.log.debug(`Send setCurrentLimit to wbecDevice (id=${boxId}, current=${current})`);
-            await this.wbecDevice.setCurrentLimit(boxId, current * 10);
+            this.log.debug(`set currentLimit to ${current}A for Box: ${boxId}`);
+            const response = await this.wbecDevice.setCurrentLimit(boxId, current * 10);
             this.log.debug(`Received setCurrentLimit response`);
+            this.log.silly(`setCurrentLimit response:\n${JSON.stringify(response, null, 2)}`);
         } catch (error) {
             this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}\n${error}`);
         }

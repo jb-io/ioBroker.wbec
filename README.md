@@ -58,7 +58,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ```
 
 ## Open Tasks
-* Add further debug logging
+* n/a
 
 ## Changelog
 <!--
@@ -66,6 +66,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [FEATURE] Add debug logging for every request
 * [FEATURE] Filter onStateChange events to avoid handling on unchanged values
 * [FEATURE] Add message handler to receive `setPowerTarget` messages
 * [FEATURE] Add `phasesAvailable` state that remains at last used phases
