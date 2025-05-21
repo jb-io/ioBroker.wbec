@@ -58,7 +58,6 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ```
 
 ## Open Tasks
-* Filter onStateChange events to avoid handling on unchanged values
 * Add further debug logging
 
 ## Changelog
@@ -67,6 +66,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [FEATURE] Filter onStateChange events to avoid handling on unchanged values
 * [FEATURE] Add message handler to receive `setPowerTarget` messages
 * [FEATURE] Add `phasesAvailable` state that remains at last used phases
 * [FEATURE] Add `setCurrent` message handler to allow setting currLim for box without modifying states.

@@ -27,6 +27,7 @@ class Wbec extends utils.Adapter {
     private _wbecConfig: WbecConfigResponse | null = null;
 
     private _enableChargeLog: boolean = false;
+    private _previousStates: {[id: string]: ioBroker.State|null} = {};
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -220,46 +221,67 @@ class Wbec extends utils.Adapter {
 
     }
 
-    private async onBoxStateChange(boxId: BoxId, parameter: keyof BoxStates, ack: boolean, state: ioBroker.State): Promise<boolean> {
-        if (parameter === 'currLim' && !ack) {
-            await this.setState(`box${boxId}.powerTarget`, null, true);
-            await this.setBoxCurrLim(boxId, state.val as number);
-            return true;
-        } else if ((parameter === 'powerTarget' && !ack) || (parameter === 'phasesAvailable')) {
-            await this.recalculatePowerTarget(boxId);
-            return true;
-        // } else if (parameter === 'chgStat') {
-        //     if (this._enableChargeLog) {
-        //         await this.updateChargeLog(boxId);
-        //     }
-        //     if ((state?.val as number) <= 3) {
-        //         await this.setState(`box${boxId}.phasesAvailable`, 1, true);
-        //     }
-        //     return true;
+    private async onBoxStateChange(boxId: BoxId, parameter: keyof BoxStates, newState: ioBroker.State, oldState: ioBroker.State|null, ack: boolean): Promise<boolean> {
+        switch (parameter) {
+            case 'currLim':
+                if (!ack) {
+                    await this.setState(`box${boxId}.powerTarget`, null, true);
+                    await this.setBoxCurrLim(boxId, newState.val as number);
+                    return true;
+                }
+                break;
+
+            case 'powerTarget':
+                if (!ack) {
+                    await this.recalculatePowerTarget(boxId);
+                    return true;
+                }
+                break;
+
+            case 'phasesAvailable':
+                if (newState.val !== oldState?.val) {
+                    await this.recalculatePowerTarget(boxId);
+                    return true;
+                }
+                break;
+
+            case 'chgStat':
+                if (newState.val !== oldState?.val) {
+                    if (this._enableChargeLog) {
+                        await this.updateChargeLog(boxId);
+                    }
+                    if ((newState?.val as number) <= 3) {
+                        await this.setState(`box${boxId}.phasesAvailable`, 1, true);
+                    }
+                    return true;
+                }
+                break;
         }
+
         return false;
     }
 
-    private async onPvStateChange(parameter: keyof Pv, state: ioBroker.State): Promise<void> {
+    private async onPvStateChange(parameter: keyof Pv, state: ioBroker.State): Promise<boolean> {
         const value = state.val;
         try {
             switch (parameter) {
                 case 'mode': {
                     await this.wbecDevice.setPvValue({pvMode: value as PvMode});
-                    break;
+                    return true;
                 }
                 case 'watt': {
                     await this.wbecDevice.setPvValue({pvWatt: value as number});
-                    break;
+                    return true;
                 }
                 case 'wbId': {
                     await this.wbecDevice.setPvValue({pvWbId: value as BoxId});
-                    break;
+                    return true;
                 }
             }
         } catch (error) {
             this.log.error(`Error while setting pv value for parameter: ${parameter} to ${value}\n${error}`);
         }
+        return false;
     }
 
     private async onEnergyMeterChange(state: ioBroker.State): Promise<void> {
@@ -273,29 +295,35 @@ class Wbec extends utils.Adapter {
         }
     }
 
-    /**
-     * Is called if a subscribed state changes
-     */
-    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
-        if (!state) {
-            // The state was deleted
-            this.log.debug(`state ${id} deleted`);
-            this.setTimeout(this.createStates.bind(this), 1000);
-            return ;
+    private matchBoxId(id: string): null|{boxId: BoxId, parameter: keyof BoxStates} {
+        const regexMatch = id.match(/.box(\d+).(\w+)$/) as RegExpMatchArray;
+        if (regexMatch && regexMatch.length >= 3) {
+            return {
+                boxId: parseInt(regexMatch[1]) as BoxId,
+                parameter: regexMatch[2] as keyof Box
+            };
+        } else {
+            return null;
         }
+    }
 
-        if (id === this.config.energyMeterId) {
-            await this.onEnergyMeterChange(state);
-            return;
+    private matchPvId(id: string): null|{parameter: keyof Pv} {
+        const regexMatch = id.match(/.pv.(\w+)$/) as RegExpMatchArray;
+        if (regexMatch && regexMatch.length >= 2) {
+            return {
+                parameter: regexMatch[1] as keyof Pv
+            };
+        } else {
+            return null;
         }
+    }
 
-        const ack = state.ack;
+    private async handleStateChange(id: string, newState: ioBroker.State, oldState: ioBroker.State|null): Promise<void> {
+        const ack = newState.ack;
 
-        const boxExpressionMatch = id.match(/.box(\d+).(\w+)$/);
-        if (boxExpressionMatch && boxExpressionMatch.length > 0) {
-            const boxId = parseInt(boxExpressionMatch[1]) as BoxId;
-            const parameter = boxExpressionMatch[2] as keyof Box;
-            if (await this.onBoxStateChange(boxId, parameter, ack, state)) {
+        const boxIdMatch = this.matchBoxId(id);
+        if (boxIdMatch) {
+            if (await this.onBoxStateChange(boxIdMatch.boxId, boxIdMatch.parameter, newState, oldState, ack)) {
                 this.update();
             }
             return;
@@ -305,14 +333,35 @@ class Wbec extends utils.Adapter {
             return;
         }
 
-        const pvExpressionMatch = id.match(/.pv.(\w+)$/);
-        if (pvExpressionMatch && pvExpressionMatch.length > 0) {
-            const parameter = pvExpressionMatch[1] as keyof Pv;
-            await this.onPvStateChange(parameter, state);
-            this.update();
+        if (id === this.config.energyMeterId) {
+            await this.onEnergyMeterChange(newState);
             return;
         }
 
+        const pvIdMatch = this.matchPvId(id);
+        if (pvIdMatch) {
+            if (await this.onPvStateChange(pvIdMatch.parameter, newState)) {
+                this.update();
+            }
+            return;
+        }
+    }
+
+    /**
+     * Is called if a subscribed state changes
+     */
+    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+
+        const oldState = this._previousStates[id] || null;
+        this._previousStates[id] = state || null;
+
+        if (!state) {
+            // The newState was deleted
+            this.log.debug(`newState ${id} deleted`);
+            this.setTimeout(this.createStates.bind(this), 1000);
+        }
+
+        await this.handleStateChange(id, state as ioBroker.State, oldState);
     }
 
     private async onMessage(obj: ioBroker.Message): Promise<void> {
@@ -351,8 +400,7 @@ class Wbec extends utils.Adapter {
                     const powerTarget = obj.message.powerTarget as number;
                     this.log.debug(`Received setCurrent message (id=${boxId}, powerTarget=${powerTarget})`);
 
-                    await this.setState(`box${boxId}.powerTarget`, null, true);
-                    await this.recalculatePowerTarget(boxId);
+                    await this.setState(`box${boxId}.powerTarget`, powerTarget, false);
 
                     return;
 
@@ -364,7 +412,9 @@ class Wbec extends utils.Adapter {
 
     private async setBoxCurrLim(boxId: BoxId, current: number): Promise<void> {
         try {
+            this.log.debug(`Send setCurrentLimit to wbecDevice (id=${boxId}, current=${current})`);
             await this.wbecDevice.setCurrentLimit(boxId, current * 10);
+            this.log.debug(`Received setCurrentLimit response`);
         } catch (error) {
             this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}\n${error}`);
         }

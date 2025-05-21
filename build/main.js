@@ -30,6 +30,7 @@ class Wbec extends utils.Adapter {
   _wbecDevice = null;
   _wbecConfig = null;
   _enableChargeLog = false;
+  _previousStates = {};
   constructor(options = {}) {
     super({
       ...options,
@@ -199,14 +200,38 @@ ${error}`);
       }).then(() => this.setState(idPrefix + ".user", line.user, true));
     }
   }
-  async onBoxStateChange(boxId, parameter, ack, state) {
-    if (parameter === "currLim" && !ack) {
-      await this.setState(`box${boxId}.powerTarget`, null, true);
-      await this.setBoxCurrLim(boxId, state.val);
-      return true;
-    } else if (parameter === "powerTarget" && !ack || parameter === "phasesAvailable") {
-      await this.recalculatePowerTarget(boxId);
-      return true;
+  async onBoxStateChange(boxId, parameter, newState, oldState, ack) {
+    switch (parameter) {
+      case "currLim":
+        if (!ack) {
+          await this.setState(`box${boxId}.powerTarget`, null, true);
+          await this.setBoxCurrLim(boxId, newState.val);
+          return true;
+        }
+        break;
+      case "powerTarget":
+        if (!ack) {
+          await this.recalculatePowerTarget(boxId);
+          return true;
+        }
+        break;
+      case "phasesAvailable":
+        if (newState.val !== (oldState == null ? void 0 : oldState.val)) {
+          await this.recalculatePowerTarget(boxId);
+          return true;
+        }
+        break;
+      case "chgStat":
+        if (newState.val !== (oldState == null ? void 0 : oldState.val)) {
+          if (this._enableChargeLog) {
+            await this.updateChargeLog(boxId);
+          }
+          if ((newState == null ? void 0 : newState.val) <= 3) {
+            await this.setState(`box${boxId}.phasesAvailable`, 1, true);
+          }
+          return true;
+        }
+        break;
     }
     return false;
   }
@@ -216,21 +241,22 @@ ${error}`);
       switch (parameter) {
         case "mode": {
           await this.wbecDevice.setPvValue({ pvMode: value });
-          break;
+          return true;
         }
         case "watt": {
           await this.wbecDevice.setPvValue({ pvWatt: value });
-          break;
+          return true;
         }
         case "wbId": {
           await this.wbecDevice.setPvValue({ pvWbId: value });
-          break;
+          return true;
         }
       }
     } catch (error) {
       this.log.error(`Error while setting pv value for parameter: ${parameter} to ${value}
 ${error}`);
     }
+    return false;
   }
   async onEnergyMeterChange(state) {
     if (state.ack && null !== state.val) {
@@ -243,25 +269,32 @@ ${error}`);
       }
     }
   }
-  /**
-   * Is called if a subscribed state changes
-   */
-  async onStateChange(id, state) {
-    if (!state) {
-      this.log.debug(`state ${id} deleted`);
-      this.setTimeout(this.createStates.bind(this), 1e3);
-      return;
+  matchBoxId(id) {
+    const regexMatch = id.match(/.box(\d+).(\w+)$/);
+    if (regexMatch && regexMatch.length >= 3) {
+      return {
+        boxId: parseInt(regexMatch[1]),
+        parameter: regexMatch[2]
+      };
+    } else {
+      return null;
     }
-    if (id === this.config.energyMeterId) {
-      await this.onEnergyMeterChange(state);
-      return;
+  }
+  matchPvId(id) {
+    const regexMatch = id.match(/.pv.(\w+)$/);
+    if (regexMatch && regexMatch.length >= 2) {
+      return {
+        parameter: regexMatch[1]
+      };
+    } else {
+      return null;
     }
-    const ack = state.ack;
-    const boxExpressionMatch = id.match(/.box(\d+).(\w+)$/);
-    if (boxExpressionMatch && boxExpressionMatch.length > 0) {
-      const boxId = parseInt(boxExpressionMatch[1]);
-      const parameter = boxExpressionMatch[2];
-      if (await this.onBoxStateChange(boxId, parameter, ack, state)) {
+  }
+  async handleStateChange(id, newState, oldState) {
+    const ack = newState.ack;
+    const boxIdMatch = this.matchBoxId(id);
+    if (boxIdMatch) {
+      if (await this.onBoxStateChange(boxIdMatch.boxId, boxIdMatch.parameter, newState, oldState, ack)) {
         this.update();
       }
       return;
@@ -269,13 +302,29 @@ ${error}`);
     if (ack) {
       return;
     }
-    const pvExpressionMatch = id.match(/.pv.(\w+)$/);
-    if (pvExpressionMatch && pvExpressionMatch.length > 0) {
-      const parameter = pvExpressionMatch[1];
-      await this.onPvStateChange(parameter, state);
-      this.update();
+    if (id === this.config.energyMeterId) {
+      await this.onEnergyMeterChange(newState);
       return;
     }
+    const pvIdMatch = this.matchPvId(id);
+    if (pvIdMatch) {
+      if (await this.onPvStateChange(pvIdMatch.parameter, newState)) {
+        this.update();
+      }
+      return;
+    }
+  }
+  /**
+   * Is called if a subscribed state changes
+   */
+  async onStateChange(id, state) {
+    const oldState = this._previousStates[id] || null;
+    this._previousStates[id] = state || null;
+    if (!state) {
+      this.log.debug(`newState ${id} deleted`);
+      this.setTimeout(this.createStates.bind(this), 1e3);
+    }
+    await this.handleStateChange(id, state, oldState);
   }
   async onMessage(obj) {
     if (obj) {
@@ -308,8 +357,7 @@ ${error}`);
           boxId = obj.message.id;
           const powerTarget = obj.message.powerTarget;
           this.log.debug(`Received setCurrent message (id=${boxId}, powerTarget=${powerTarget})`);
-          await this.setState(`box${boxId}.powerTarget`, null, true);
-          await this.recalculatePowerTarget(boxId);
+          await this.setState(`box${boxId}.powerTarget`, powerTarget, false);
           return;
         default:
           this.log.warn(`Received unknown message: ${obj.command}`);
@@ -318,7 +366,9 @@ ${error}`);
   }
   async setBoxCurrLim(boxId, current) {
     try {
+      this.log.debug(`Send setCurrentLimit to wbecDevice (id=${boxId}, current=${current})`);
       await this.wbecDevice.setCurrentLimit(boxId, current * 10);
+      this.log.debug(`Received setCurrentLimit response`);
     } catch (error) {
       this.log.error(`Error while setting current limit for Box: ${boxId} to ${current}
 ${error}`);
