@@ -58,7 +58,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ```
 
 ## Open Tasks
-* n/a
+* Try to reset wbec client on error
 
 ## Changelog
 <!--
