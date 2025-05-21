@@ -65,7 +65,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.3.0 (2025-05-21)
 * [FEATURE] Add debug logging for every request
 * [FEATURE] Filter onStateChange events to avoid handling on unchanged values
 * [FEATURE] Add message handler to receive `setPowerTarget` messages
