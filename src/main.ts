@@ -39,7 +39,7 @@ class Wbec extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
         this.on('message', this.onMessage.bind(this));
 
-        this.update = _.throttle(this.update.bind(this), this.config.maxRequestInterval);
+        this.update = _.throttle(this.update.bind(this), this.config.maxRequestInterval * 1.1);
     }
 
     get wbecDevice(): WbecClient {
@@ -81,11 +81,11 @@ class Wbec extends utils.Adapter {
         await this.createConfigStates();
         await this.createStates();
 
-        this.requestInterval = this.setInterval(this.onInterval.bind(this), this.config.requestInterval * 1000);
+        this.requestInterval = this.setInterval(this.onInterval.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1000));
         this.update();
 
         if (this.config.energyMeterId) {
-            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this), this.wbecConfig.cfgPvCycleTime * 1000);
+            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1000));
             this.subscribeForeignStates(this.config.energyMeterId);
         }
 

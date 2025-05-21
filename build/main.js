@@ -40,7 +40,7 @@ class Wbec extends utils.Adapter {
     this.on("stateChange", this.onStateChange.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.on("message", this.onMessage.bind(this));
-    this.update = import_lodash.default.throttle(this.update.bind(this), this.config.maxRequestInterval);
+    this.update = import_lodash.default.throttle(this.update.bind(this), this.config.maxRequestInterval * 1.1);
   }
   get wbecDevice() {
     return this._wbecDevice;
@@ -74,10 +74,10 @@ ${JSON.stringify(this._wbecConfig, null, 2)}`);
     }
     await this.createConfigStates();
     await this.createStates();
-    this.requestInterval = this.setInterval(this.onInterval.bind(this), this.config.requestInterval * 1e3);
+    this.requestInterval = this.setInterval(this.onInterval.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1e3));
     this.update();
     if (this.config.energyMeterId) {
-      this.onEnergyMeterChange = import_lodash.default.throttle(this.onEnergyMeterChange.bind(this), this.wbecConfig.cfgPvCycleTime * 1e3);
+      this.onEnergyMeterChange = import_lodash.default.throttle(this.onEnergyMeterChange.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1e3));
       this.subscribeForeignStates(this.config.energyMeterId);
     }
     if (this._enableChargeLog) {
@@ -234,7 +234,7 @@ ${error}`);
         }
         break;
       case "chgStat":
-        if (newState.val !== (oldState == null ? void 0 : oldState.val)) {
+        if (oldState && newState.val !== (oldState == null ? void 0 : oldState.val)) {
           if (this._enableChargeLog) {
             await this.updateChargeLog(boxId);
           }
