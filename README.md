@@ -65,7 +65,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.2 (2025-05-22)
 * [UPDATE] Update @iobroker/adapter-core to 3.2.3
 * [UPDATE] Update admin dependency to 7.4.10
 

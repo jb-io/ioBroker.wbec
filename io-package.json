@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "news": {
+      "0.4.2": {
+        "en": "[UPDATE] Update @iobroker/adapter-core to 3.2.3\n[UPDATE] Update admin dependency to 7.4.10",
+        "de": "[UPDATE] Update @iobroker/Adapter-Core auf 3.2.3\n[UPDATE] Adminabhängigkeit auf 7.4.10 aktualisieren",
+        "ru": "[Обновление] Обновление @iobroker/adapter-core до 3.2.3\n[Обновление] Обновление зависимости администратора до 7.4.10",
+        "pt": "[UPDATE] Atualizar @iobroker/adapter-core para 3.2.3\n[UPDATE] Atualizar dependência de administrador para 7.4.10",
+        "nl": "[UPDATE] Update @iobroker/adapter-core naar 3.2.3\n[UPDATE] Admin afhankelijkheid bijwerken naar 7.4.10",
+        "fr": "[UPDATE] Mise à jour @iobroker/adaptateur-core au 3.2.3\n[UPDATE] Mettre à jour la dépendance admin au 7.4.10",
+        "it": "[UPDATE] Aggiorna @iobroker/adapter-core a 3.2.3\n[UPDATE] Dipendenza dell'amministratore di aggiornamento a 7.4.10",
+        "es": "[UPDATE] Update @iobroker/adapter-core to 3.2.3\nActualizar la dependencia de administración a 7.4.10",
+        "pl": "Aktualizacja @ iobroker / adapter-core do 3.2.3\n[UPDATE] Aktualizacja zależności admin do 7.4.10",
+        "uk": "[UPDATE] Оновлення @iobroker/adapter-core to 3.2.3\n[UPDATE] Оновлення залежності адміністратора до 7.4.10",
+        "zh-cn": "[UPDATE] 更新@iobroduc/adapter-core 到 3.2.3\n[UPDATE]更新管理员依赖度为7.4.10"
+      },
       "0.4.1": {
         "en": "[BUGFIX] Update node version for github workflows\n[REFACTOR] Fix eslint and apply suggestions",
         "de": "[BUGFIX] Knotenversion für github Workflows aktualisieren\n(REFACTOR) Eslint beheben und Vorschläge anwenden",
@@ -80,19 +93,6 @@
         "pl": "[BUGFIX] Spowolnić początkowe żądania, aby uniknąć przeciążenia wbec na początku adaptera",
         "uk": "[BUGFIX] Повільнити початкові запити, щоб уникнути перевантаження wbec на старті адаптера",
         "zh-cn": "[BUGFIX] 减慢初始请求以避免适配器启动时wbec超载"
-      },
-      "0.1.3": {
-        "en": "[BUGFIX] Allow configurable Timeout for requests",
-        "de": "[BUGFIX] Erlauben Sie konfigurierbares Timeout für Anfragen",
-        "ru": "[BUGFIX]",
-        "pt": "[BUGFIX] Permitir tempo configurável para pedidos",
-        "nl": "[BUGFIX] Configureerbare timeout voor verzoeken toestaan",
-        "fr": "[BUGFIX] Permettre un délai configurable pour les demandes",
-        "it": "[BUGFIX] Consentire Timeout configurabile per le richieste",
-        "es": "[BUGFIX] Permitir tiempo configurable para solicitudes",
-        "pl": "[BUGFIX] Pozwól na konfigurowalny czas oczekiwania",
-        "uk": "[BUGFIX] Дозволити налаштування часу для запитів",
-        "zh-cn": "[BUGFIX] 允许请求的可配置超时"
       }
     },
     "titleLang": {
