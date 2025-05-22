@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "news": {
+      "0.4.1": {
+        "en": "[BUGFIX] Update node version for github workflows\n[REFACTOR] Fix eslint and apply suggestions",
+        "de": "[BUGFIX] Knotenversion für github Workflows aktualisieren\n(REFACTOR) Eslint beheben und Vorschläge anwenden",
+        "ru": "[BUGFIX] Обновление узловой версии для рабочих процессов github\n[Рефактор] Исправить эслинт и применить предложения",
+        "pt": "[BUGFIX] Versão do nó de atualização para fluxos de trabalho do github\n[REFACTOR] Corrigir eslint e aplicar sugestões",
+        "nl": "[BUGFIX] Update node versie voor github workflows\n[REFACTOR] Repareren eslint en suggesties toepassen",
+        "fr": "[BUGFIX] Mettre à jour la version noeud pour les workflows github\n[REFACTEUR] Corriger l'essence et appliquer les suggestions",
+        "it": "[BUGFIX] Versione nodo di aggiornamento per flussi di lavoro github\n[REFACTOR] Fissare eslint e applicare suggerimenti",
+        "es": "[BUGFIX] Actualizar la versión nodo para los flujos de trabajo github\n[REFACTOR] Fijar eslint y aplicar sugerencias",
+        "pl": "[BUGFIX] Aktualizacja wersji węzła dla github workflows\n[REFACTOR] Napraw eslint i zastosuj sugestie",
+        "uk": "[BUGFIX] Оновлення версії вузла для github робочих процесів\n[REFACTOR] Виправлення eslint і застосування пропозицій",
+        "zh-cn": "[BUGFIX] Github工作流程更新节点版本\n[反 修复 Eslint 并应用建议"
+      },
       "0.4.0": {
         "en": "[REFACTOR] Fix various issues reported from adapter checker\n[FEATURE] Assert all timers are reset onUnload adapter",
         "de": "(REFACTOR) Beheben Sie verschiedene Probleme von Adapter Checker gemeldet\n(STÖHNT) Assert alle Timer auf Unload-Adapter zurücksetzen",
@@ -80,19 +93,6 @@
         "pl": "[BUGFIX] Pozwól na konfigurowalny czas oczekiwania",
         "uk": "[BUGFIX] Дозволити налаштування часу для запитів",
         "zh-cn": "[BUGFIX] 允许请求的可配置超时"
-      },
-      "0.1.2": {
-        "en": "[TASK] Add admin link to wbec",
-        "de": "[TASK] Admin-Link zu wbec hinzufügen",
-        "ru": "[TASK] Добавить ссылку администратора на wbec",
-        "pt": "[TASK] Adicionar link de admin para wbec",
-        "nl": "[TASK] Admin link naar wbec toevoegen",
-        "fr": "[TASK] Ajouter un lien admin à wbec",
-        "it": "[TASK] Aggiungi link di amministrazione a wbec",
-        "es": "[TASK] Añadir enlace de administración a wbec",
-        "pl": "[TASK] Dodaj link admin do wbec",
-        "uk": "[TASK] Додати посилання адміністратора до wbec",
-        "zh-cn": "[TASK] 添加管理链接到 wbec"
       }
     },
     "titleLang": {
