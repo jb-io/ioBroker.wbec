@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "news": {
+      "0.4.3": {
+        "en": "[UPDATE] Update @iobroker/adapter-dev to 1.4.0\n[UPDATE] Update @iobroker/testing to 5.0.4",
+        "de": "[UPDATE] Update @iobroker/adapter-dev auf 1.4.0\n[UPDATE] Update @iobroker/Test auf 5.0.4",
+        "ru": "[Обновление] Обновление @iobroker/adapter-dev до 1.4.0\n[Обновление] Обновление @iobroker/тестирование до 5.0.4",
+        "pt": "[UPDATE] Atualizar @iobroker/adapter-dev para 1.4.0\n[UPDATE] Atualizar @iobroker/testando para 5.0.4",
+        "nl": "[UPDATE] Update @iobroker/adapter-dev naar 1.4.0\n[UPDATE] Update @iobroker/testing naar 5.0.4",
+        "fr": "[UPDATE] Mise à jour @iobroker/adaptateur-dev à 1.4.0\nMise à jour @iobroker/test à 5.0.4",
+        "it": "[UPDATE] Aggiorna @iobroker/adapter-dev a 1.4.0\n[UPDATE] Aggiorna @iobroker/testing a 5.0.4",
+        "es": "[UPDATE] Actualizar @iobroker/adapter-dev a 1.4.0\n[UPDATE] Actualizar @iobroker/testing a 5.0.4",
+        "pl": "[UPDATE] Aktualizacja @ iobroker / adapter- dev do 1.4.0\nAktualizacja @ iobroker / testowanie do 5.0.4",
+        "uk": "[UPDATE] Оновлення @iobroker/adapter-dev до 1.4.0\n[UPDATE] Оновлення @iobroker/testing до 5.0.4",
+        "zh-cn": "[UPDATE]更新@iobroduc/adapter-dev为1.4\n[UPDATE]更新@iobroduc/测试到5.0.4"
+      },
       "0.4.2": {
         "en": "[UPDATE] Update @iobroker/adapter-core to 3.2.3\n[UPDATE] Update admin dependency to 7.4.10",
         "de": "[UPDATE] Update @iobroker/Adapter-Core auf 3.2.3\n[UPDATE] Adminabhängigkeit auf 7.4.10 aktualisieren",
@@ -80,19 +93,6 @@
         "pl": "[REFACTOR] Zastąp klienta wewnętrznego wbec oddzielną biblioteką https: / / www.npmjs.com / package / wbec- client\n[FEATURE] Nowy parametr maxRequestInterval twierdzi, że wbec nie jest zalany żądaniami\n[BUGFIX] dzienniki opłat tylko uzyskać, jeśli włączone na wbec config",
         "uk": "[REFACTOR] Замініть внутрішній клієнт wbec за окремою бібліотекою https://www.npmjs.com/package/wbec-client\n[Життя] Новий параметр maxRequestInterval стверджує, що wbec не затоплюється з запитами\n[BUGFIX] журнали заряду тільки отримати запит, якщо ввімкнено налаштування wbec",
         "zh-cn": "[REFACTOR] 将内部的wbec客户端替换为单独的库 https://www.npmjs.com/package/wbec-client 互联网档案馆的存檔,存档日期2013-12-21\n[颤 新建最大请求Interval参数, 表示wbec没有被请求淹没\n[BUGFIX] 充电日志只有在使用 wbec 配置时才会被请求"
-      },
-      "0.1.4": {
-        "en": "[BUGFIX] Slow down initial requests to avoid wbec overload on adapter start",
-        "de": "[BUGFIX] Erstanforderungen verlangsamen, um Wbec-Überlastung auf Adapterstart zu vermeiden",
-        "ru": "[BUGFIX] Замедление начальных запросов во избежание перегрузки wbec при запуске адаптера",
-        "pt": "[BUGFIX] Abranda os pedidos iniciais para evitar sobrecarga wbec no início do adaptador",
-        "nl": "[BUGFIX] Vertragen eerste verzoeken om wbec overbelasting te voorkomen bij het starten van de adapter",
-        "fr": "[BUGFIX] Ralentir les demandes initiales pour éviter la surcharge wbec au démarrage de l'adaptateur",
-        "it": "[BUGFIX] Rallentare le richieste iniziali per evitare il sovraccarico di wbec sull'avvio dell'adattatore",
-        "es": "[BUGFIX] Reduzca las solicitudes iniciales para evitar la sobrecarga de wbec en el comienzo del adaptador",
-        "pl": "[BUGFIX] Spowolnić początkowe żądania, aby uniknąć przeciążenia wbec na początku adaptera",
-        "uk": "[BUGFIX] Повільнити початкові запити, щоб уникнути перевантаження wbec на старті адаптера",
-        "zh-cn": "[BUGFIX] 减慢初始请求以避免适配器启动时wbec超载"
       }
     },
     "titleLang": {
