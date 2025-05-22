@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.3.1",
+    "version": "0.4.0",
     "news": {
+      "0.4.0": {
+        "en": "[REFACTOR] Fix various issues reported from adapter checker\n[FEATURE] Assert all timers are reset onUnload adapter",
+        "de": "(REFACTOR) Beheben Sie verschiedene Probleme von Adapter Checker gemeldet\n(STÖHNT) Assert alle Timer auf Unload-Adapter zurücksetzen",
+        "ru": "[Рефактор] Исправьте различные проблемы, сообщенные из проверочной\n[ФИАТУРА] Утвердить все таймеры сброс на Unload адаптер",
+        "pt": "[REFACTOR] Corrigir vários problemas relatados do verificador do adaptador\n[FEATURE] Assert todos os temporizadores são redefinidos no adaptador de descarga",
+        "nl": "[REFACTOR] Repareer verschillende problemen gemeld van adapter checker\n[FEATURE] Alle timers worden gereset opUnload-adapter",
+        "fr": "[REFACTEUR] Correction de divers problèmes signalés par le vérificateur d'adaptateur\n[FÉATURE] Assister tous les minuteurs sont réinitialisés surUnload adaptateur",
+        "it": "[REFACTOR] Risolvere vari problemi segnalati dall'adattatore checker\n[FEATURE] Assert tutti i timer sono resettati sull'adattatore di scarico",
+        "es": "[REFACTOR] Arreglar diversos problemas reportados desde el control de adaptador\n[FEATURA] Assert all timers are reset onUnload adapter",
+        "pl": "[REFACTOR] Poprawia różne problemy zgłaszane z sprawdzania adaptera\n[FEATURE] Asert wszystkie timery są resetowane na adapter Unload",
+        "uk": "[REFACTOR] Виправлення різних питань, що повідомляються від перевірки адаптера\n[Життя] Вставити всі таймери скидання на адаптері",
+        "zh-cn": "[反 解决适配器检查器报告的各种问题\n[颤 将所有计时器重置在 Unload 适配器上"
+      },
       "0.3.1": {
         "en": "[BUGFIX] Assert set current values are in valid range between 6..16 or 0",
         "de": "[BUGFIX] Assert-Sollstromwerte liegen im gültigen Bereich zwischen 6.16 oder 0",
@@ -80,19 +93,6 @@
         "pl": "[TASK] Dodaj link admin do wbec",
         "uk": "[TASK] Додати посилання адміністратора до wbec",
         "zh-cn": "[TASK] 添加管理链接到 wbec"
-      },
-      "0.1.1": {
-        "en": "[TASK] Add error handling on external requests\n[TASK] Update dependencies from dependabot",
-        "de": "[TASK] Fehlerbehandlung auf externen Anfragen hinzufügen\n[TASK] Abhängigkeiten von abhängigabot aktualisieren",
-        "ru": "[TASK] Добавить обработку ошибок по внешним запросам\n[TASK]",
-        "pt": "[TASK] Adicionar manipulação de erros em pedidos externos\n[TASK] Atualizar dependências de dependeabot",
-        "nl": "[TASK] Foutafhandeling toevoegen bij externe verzoeken\n[TASK] Update afhankelijkheden van dependabot",
-        "fr": "[TASK] Ajouter le traitement des erreurs sur les requêtes externes\n[TASK] Mise à jour des dépendances de dependabot",
-        "it": "[TASK] Aggiungi gestione degli errori sulle richieste esterne\n[TASK] Dipendenze di aggiornamento da dipendeabot",
-        "es": "[TASK] Agregue el manejo de errores en solicitudes externas\n[TASK] Actualizar las dependencias de dependabot",
-        "pl": "[TASK] Dodaj obsługę błędów na zewnętrznych żądaniach\n[TASK] Uaktualnij zależności od zależności",
-        "uk": "[TASK] Додавання обробки помилок на зовнішніх запитах\n[TASK] Оновлення залежності від залежності",
-        "zh-cn": "[TASK] 在外部请求中添加错误处理\n[TASK] 从属性更新依赖性"
       }
     },
     "titleLang": {
