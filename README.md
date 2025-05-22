@@ -65,6 +65,10 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [UPDATE] Update @iobroker/adapter-core to 3.2.3
+* [UPDATE] Update admin dependency to 7.4.10
+
 ### 0.4.1 (2025-05-22)
 * [BUGFIX] Update node version for github workflows
 * [REFACTOR] Fix eslint and apply suggestions
