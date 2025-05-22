@@ -66,6 +66,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [BUGFIX] Update node version for github workflows
 * [REFACTOR] Fix eslint and apply suggestions
 
 ### 0.4.0 (2025-05-22)
