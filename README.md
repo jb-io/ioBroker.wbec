@@ -66,6 +66,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [REFACTOR] Fix various issues reported from adapter checker
 * [FEATURE] Assert all timers are reset onUnload adapter
 
 ### 0.3.1 (2025-05-22)

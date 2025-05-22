@@ -10,6 +10,8 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
+                    "lg": 4,
+                    "xl": 4,
                     "type": "text",
                     "label": "host"
                 },
@@ -17,6 +19,8 @@
                     "xs": 12,
                     "sm": 4,
                     "md": 2,
+                    "lg": 2,
+                    "xl": 2,
                     "type": "number",
                     "label": "request_interval"
                 },
@@ -24,6 +28,8 @@
                     "xs": 12,
                     "sm": 4,
                     "md": 2,
+                    "lg": 2,
+                    "xl": 2,
                     "type": "number",
                     "label": "request_timeout"
                 },
@@ -31,6 +37,8 @@
                     "xs": 12,
                     "sm": 4,
                     "md": 2,
+                    "lg": 2,
+                    "xl": 2,
                     "type": "number",
                     "label": "max_request_interval"
                 }
@@ -44,6 +52,8 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
+                    "lg": 4,
+                    "xl": 4,
                     "type": "objectId",
                     "label": "energy_meter_id",
                     "newLine": true

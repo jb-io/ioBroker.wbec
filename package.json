@@ -9,6 +9,7 @@
   "homepage": "https://github.com/jb-io/ioBroker.wbec",
   "license": "GPL-3.0-or-later",
   "keywords": [
+    "ioBroker",
     "wallbox",
     "energy management"
   ],
