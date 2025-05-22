@@ -23,7 +23,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
 var import_lodash = __toESM(require("lodash"));
-var import_wbec_client = require("wbec-client/dist/wbec-client");
+var import_WbecClient = __toESM(require("wbec-client/dist/WbecClient"));
 class Wbec extends utils.Adapter {
   requestInterval = void 0;
   updateTimeout = void 0;
@@ -67,7 +67,7 @@ class Wbec extends utils.Adapter {
       return;
     }
     try {
-      this._wbecDevice = new import_wbec_client.WbecClient(this.config.host, {
+      this._wbecDevice = new import_WbecClient.default(this.config.host, {
         timeout: this.config.requestTimeout,
         maxRequestInterval: this.config.maxRequestInterval
       });
@@ -438,6 +438,7 @@ ${error}`);
     try {
       this.clearInterval(this.requestInterval);
       this.clearTimeout(this.updateTimeout);
+      this.wbecDevice.clientReset();
       callback();
     } catch {
       callback();

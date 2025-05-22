@@ -9,7 +9,7 @@ import * as utils from '@iobroker/adapter-core';
 // Load your modules here:
 import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from 'wbec-client/dist/types';
 import _ from 'lodash';
-import {WbecClient} from 'wbec-client/dist/wbec-client';
+import WbecClient from 'wbec-client/dist/WbecClient';
 
 interface BoxStates extends Box {
     chgStat: number,
@@ -481,6 +481,7 @@ class Wbec extends utils.Adapter {
             // Here you must clear all timeouts or intervals that may still be active
             this.clearInterval(this.requestInterval);
             this.clearTimeout(this.updateTimeout);
+            this.wbecDevice.clientReset();
 
             callback();
         } catch {
