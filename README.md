@@ -65,6 +65,10 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [BUGFIX] Update node version for github workflows
+* [REFACTOR] Fix eslint and apply suggestions
+
 ### 0.4.0 (2025-05-22)
 * [REFACTOR] Fix various issues reported from adapter checker
 * [FEATURE] Assert all timers are reset onUnload adapter

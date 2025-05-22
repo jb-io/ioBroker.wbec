@@ -538,7 +538,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.bldDate`, {
             type: 'state',
             common: {
@@ -547,7 +547,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.timeNow`, {
             type: 'state',
             common: {
@@ -556,7 +556,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.enwg14a`, {
             type: 'state',
             common: {
@@ -565,7 +565,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.enwgErr`, {
             type: 'state',
             common: {
@@ -574,7 +574,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         idPrefix = 'modbus';
         await this.extendObject(idPrefix, {
             type: 'device'
@@ -587,7 +587,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.state.millis`, {
             type: 'state',
             common: {
@@ -597,7 +597,7 @@ class Wbec extends utils.Adapter {
                 unit: 'ms',
                 write: false,
             }
-        })
+        });
         idPrefix = 'rfid';
         await this.extendObject(idPrefix, {
             type: 'device'
@@ -610,7 +610,7 @@ class Wbec extends utils.Adapter {
                 type: 'boolean',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.release`, {
             type: 'state',
             common: {
@@ -619,7 +619,7 @@ class Wbec extends utils.Adapter {
                 type: 'boolean',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.lastId`, {
             type: 'state',
             common: {
@@ -628,7 +628,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         idPrefix = 'pv';
         await this.extendObject(idPrefix, {
             type: 'device'
@@ -647,7 +647,7 @@ class Wbec extends utils.Adapter {
                 },
                 write: true,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.watt`, {
             type: 'state',
             common: {
@@ -657,7 +657,7 @@ class Wbec extends utils.Adapter {
                 unit: 'W',
                 write: true,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.wbId`, {
             type: 'state',
             common: {
@@ -666,7 +666,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: true,
             }
-        })
+        });
         this.subscribeStates(`${idPrefix}.*`);
         idPrefix = 'wifi';
         await this.extendObject(idPrefix, {
@@ -680,7 +680,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.rssi`, {
             type: 'state',
             common: {
@@ -689,7 +689,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.signal`, {
             type: 'state',
             common: {
@@ -698,7 +698,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.channel`, {
             type: 'state',
             common: {
@@ -707,7 +707,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
     }
 
     private async createBoxStates(boxId: number): Promise<any> {
@@ -722,7 +722,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.version`, {
             type: 'state',
             common: {
@@ -731,7 +731,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.chgStat`, {
             type: 'state',
             common: {
@@ -750,7 +750,7 @@ class Wbec extends utils.Adapter {
                 case  7: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'ja'; break;   // C2
                 default: carStat = message.chgStat; wbStat = '-';
              */
-        })
+        });
         await this.extendObject(`${idPrefix}.currL1`, {
             type: 'state',
             common: {
@@ -759,7 +759,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currL2`, {
             type: 'state',
             common: {
@@ -768,7 +768,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currL3`, {
             type: 'state',
             common: {
@@ -777,7 +777,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.pcbTemp`, {
             type: 'state',
             common: {
@@ -787,7 +787,7 @@ class Wbec extends utils.Adapter {
                 unit: '°C',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.voltL1`, {
             type: 'state',
             common: {
@@ -797,7 +797,7 @@ class Wbec extends utils.Adapter {
                 unit: 'V',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.voltL2`, {
             type: 'state',
             common: {
@@ -807,7 +807,7 @@ class Wbec extends utils.Adapter {
                 unit: 'V',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.voltL3`, {
             type: 'state',
             common: {
@@ -817,7 +817,7 @@ class Wbec extends utils.Adapter {
                 unit: 'V',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.extLock`, {
             type: 'state',
             common: {
@@ -826,7 +826,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.power`, {
             type: 'state',
             common: {
@@ -836,7 +836,7 @@ class Wbec extends utils.Adapter {
                 role: 'value.power.consumed',
                 unit: 'W',
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.powerTarget`, {
             type: 'state',
             common: {
@@ -846,7 +846,7 @@ class Wbec extends utils.Adapter {
                 role: 'value.power',
                 unit: 'W',
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.energyP`, {
             type: 'state',
             common: {
@@ -856,7 +856,7 @@ class Wbec extends utils.Adapter {
                 unit: 'kWh',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.energyI`, {
             type: 'state',
             common: {
@@ -866,7 +866,7 @@ class Wbec extends utils.Adapter {
                 unit: 'kWh',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.energyC`, {
             type: 'state',
             common: {
@@ -876,7 +876,7 @@ class Wbec extends utils.Adapter {
                 unit: 'kWh',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currMax`, {
             type: 'state',
             common: {
@@ -886,7 +886,7 @@ class Wbec extends utils.Adapter {
                 unit: 'A',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currMin`, {
             type: 'state',
             common: {
@@ -896,7 +896,7 @@ class Wbec extends utils.Adapter {
                 unit: 'A',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.logStr`, {
             type: 'state',
             common: {
@@ -905,7 +905,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.wdTmOut`, {
             type: 'state',
             common: {
@@ -915,7 +915,7 @@ class Wbec extends utils.Adapter {
                 unit: 'ms',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.standby`, {
             type: 'state',
             common: {
@@ -929,7 +929,7 @@ class Wbec extends utils.Adapter {
                 },
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.remLock`, {
             type: 'state',
             common: {
@@ -938,7 +938,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currLim`, {
             type: 'state',
             common: {
@@ -948,7 +948,7 @@ class Wbec extends utils.Adapter {
                 unit: 'A',
                 write: true,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.currFs`, {
             type: 'state',
             common: {
@@ -958,7 +958,7 @@ class Wbec extends utils.Adapter {
                 unit: 'A',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.lmReq`, {
             type: 'state',
             common: {
@@ -967,7 +967,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.lmLim`, {
             type: 'state',
             common: {
@@ -976,7 +976,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.resCode`, {
             type: 'state',
             common: {
@@ -985,7 +985,7 @@ class Wbec extends utils.Adapter {
                 type: 'string',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.failCnt`, {
             type: 'state',
             common: {
@@ -994,7 +994,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.phases`, {
             type: 'state',
             common: {
@@ -1003,7 +1003,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
         await this.extendObject(`${idPrefix}.phasesAvailable`, {
             type: 'state',
             common: {
@@ -1012,7 +1012,7 @@ class Wbec extends utils.Adapter {
                 type: 'number',
                 write: false,
             }
-        })
+        });
 
         await this.setState(`${idPrefix}.powerTarget`, null, true);
         await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
