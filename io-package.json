@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
+      "0.3.1": {
+        "en": "[BUGFIX] Assert set current values are in valid range between 6..16 or 0",
+        "de": "[BUGFIX] Assert-Sollstromwerte liegen im gültigen Bereich zwischen 6.16 oder 0",
+        "ru": "[BUGFIX] Устанавливаемые значения тока находятся в допустимом диапазоне между 6..16 или 0",
+        "pt": "[BUGFIX] Os valores atuais dos conjuntos Assert estão em intervalo válido entre 6.16 e 0",
+        "nl": "[BUGFIX] Assert ingestelde stroomwaarden liggen tussen 6.16 of 0",
+        "fr": "[BUGFIX] Assister les valeurs courantes de l'ensemble sont dans la plage valide entre 6..16 ou 0",
+        "it": "[BUGFIX] I valori correnti impostati sono validi tra 6..16 o 0",
+        "es": "[BUGFIX] Los valores actuales de Assert están en rango válido entre 6,16 o 0",
+        "pl": "[BUGFIX] Wartości prądowe ustawione na asera są w prawidłowym zakresie między 6.. 16 lub 0",
+        "uk": "[BUGFIX] Встановити поточні значення в діапазоні між 6..16 або 0",
+        "zh-cn": "[BUGFIX] 套装的当前值在6.16至0"
+      },
       "0.3.0": {
         "en": "[FEATURE] Add debug logging for every request\n[FEATURE] Filter onStateChange events to avoid handling on unchanged values\n[FEATURE] Add message handler to receive `setPowerTarget` messages\n[FEATURE] Add `phasesAvailable` state that remains at last used phases\n[FEATURE] Add `setCurrent` message handler to allow setting currLim for box without modifying states.",
         "de": "(STÖHNT) Debug-Logging für jede Anfrage hinzufügen\n[FEATURE] Filter aufState Ereignisse ändern, um die Handhabung auf unveränderten Werten zu vermeiden\n(STÖHNT) Nachrichtenhandler hinzufügen, um `setPowerTarget` Nachrichten zu erhalten\n[FEATURE] Fügen Sie `phasesAvailable`-Zustand, der in den letzten verwendeten Phasen bleibt\n[FEATURE] Fügen Sie `setCurrent` Nachrichtenhandler hinzu, damit currLim für Box ohne Änderungszustände eingestellt werden kann.",
@@ -80,19 +93,6 @@
         "pl": "[TASK] Dodaj obsługę błędów na zewnętrznych żądaniach\n[TASK] Uaktualnij zależności od zależności",
         "uk": "[TASK] Додавання обробки помилок на зовнішніх запитах\n[TASK] Оновлення залежності від залежності",
         "zh-cn": "[TASK] 在外部请求中添加错误处理\n[TASK] 从属性更新依赖性"
-      },
-      "0.1.0": {
-        "en": "[TASK] initial release",
-        "de": "[TASK] erste Veröffentlichung",
-        "ru": "[TASK] первоначальный релиз",
-        "pt": "[TASK] lançamento inicial",
-        "nl": "[TASK] eerste release",
-        "fr": "[TASK] libération initiale",
-        "it": "[TASK] rilascio iniziale",
-        "es": "[TASK] versión inicial",
-        "pl": "[TASK] wydanie wstępne",
-        "uk": "[TASK] початковий реліз",
-        "zh-cn": "[TASK]初始发布"
       }
     },
     "titleLang": {
