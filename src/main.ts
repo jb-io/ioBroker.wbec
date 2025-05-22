@@ -50,6 +50,16 @@ class Wbec extends utils.Adapter {
         return this._wbecConfig as WbecConfigResponse;
     }
 
+    private roundCurrent(current: number): number {
+        if (current < 6) {
+            return 0;
+        }
+        if (current >= 16) {
+            return 16;
+        }
+        return Math.round(current * 10) / 10;
+    }
+
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -432,6 +442,7 @@ class Wbec extends utils.Adapter {
 
     private async setBoxCurrLim(boxId: BoxId, current: number): Promise<void> {
         try {
+            current = this.roundCurrent(current);
             this.log.debug(`set currentLimit to ${current}A for Box: ${boxId}`);
             const response = await this.wbecDevice.setCurrentLimit(boxId, current * 10);
             this.log.debug(`Received setCurrentLimit response`);
@@ -456,7 +467,7 @@ class Wbec extends utils.Adapter {
         ].filter(v => v !== undefined);
         const avgVolt = voltages.reduce((a, b) => a + b, 0) / (voltages.length || 1);
 
-        const currLim = (!avgVolt || !phases) ? 0 : powerTarget / phases / avgVolt;
+        const currLim = (!avgVolt || !phases) ? 0 : this.roundCurrent(powerTarget / phases / avgVolt);
         this.log.debug(`Recalculating power target for Box: ${boxId} to ${currLim}A, avgVolt=${avgVolt}V, powerTarget=${powerTarget}W, phases=${phases}`);
         await this.setState(`box${boxId}.powerTarget`, powerTarget, true);
         await this.setBoxCurrLim(boxId, currLim);
