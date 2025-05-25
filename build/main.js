@@ -24,6 +24,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var utils = __toESM(require("@iobroker/adapter-core"));
 var import_lodash = __toESM(require("lodash"));
 var import_WbecClient = __toESM(require("wbec-client/dist/WbecClient"));
+var i18n = __toESM(require("./i18n"));
 class Wbec extends utils.Adapter {
   requestInterval = void 0;
   updateTimeout = void 0;
@@ -184,7 +185,7 @@ ${error}`);
       await this.extendObject(idPrefix + ".timestamp", {
         type: "state",
         common: {
-          name: "Zeitstempel",
+          name: i18n.chargeLog["timestamp"],
           type: "number",
           role: "timestamp",
           write: false
@@ -193,7 +194,7 @@ ${error}`);
       await this.extendObject(idPrefix + ".duration", {
         type: "state",
         common: {
-          name: "Ladedauer",
+          name: i18n.chargeLog["duration"],
           type: "number",
           role: "interval",
           unit: "s",
@@ -203,7 +204,7 @@ ${error}`);
       await this.extendObject(idPrefix + ".energy", {
         type: "state",
         common: {
-          name: "Lademenge",
+          name: i18n.chargeLog["energy"],
           type: "number",
           role: "value.energy",
           unit: "Wh",
@@ -213,7 +214,7 @@ ${error}`);
       await this.extendObject(idPrefix + ".user", {
         type: "state",
         common: {
-          name: "Benutzer",
+          name: i18n.chargeLog["user"],
           type: "number",
           role: "value",
           write: false
@@ -455,10 +456,11 @@ ${error}`);
     for (const wbecConfigKey in this.wbecConfig) {
       const id = `cfg.${wbecConfigKey}`;
       const value = this.wbecConfig[wbecConfigKey];
+      const name = wbecConfigKey in i18n.cfg ? i18n.cfg[wbecConfigKey] : wbecConfigKey;
       promises.push(this.extendObject(id, {
         type: "state",
         common: {
-          name: wbecConfigKey,
+          name,
           write: false,
           type: typeof value
         }
@@ -483,7 +485,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.version`, {
       type: "state",
       common: {
-        name: "version",
+        name: i18n.json[`${idPrefix}.version`],
         role: "text",
         type: "string",
         write: false
@@ -492,7 +494,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.bldDate`, {
       type: "state",
       common: {
-        name: "bldDate",
+        name: i18n.json[`${idPrefix}.bldDate`],
         role: "text",
         type: "string",
         write: false
@@ -501,7 +503,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.timeNow`, {
       type: "state",
       common: {
-        name: "timeNow",
+        name: i18n.json[`${idPrefix}.timeNow`],
         role: "text",
         type: "string",
         write: false
@@ -510,7 +512,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.enwg14a`, {
       type: "state",
       common: {
-        name: "enwg14a",
+        name: i18n.json[`${idPrefix}.enwg14a`],
         role: "value",
         type: "number",
         write: false
@@ -519,7 +521,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.enwgErr`, {
       type: "state",
       common: {
-        name: "enwgErr",
+        name: i18n.json[`${idPrefix}.enwgErr`],
         role: "value",
         type: "number",
         write: false
@@ -532,7 +534,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.state.lastTm`, {
       type: "state",
       common: {
-        name: "lastTm",
+        name: i18n.json[`${idPrefix}.state.lastTm`],
         role: "value",
         type: "number",
         write: false
@@ -541,7 +543,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.state.millis`, {
       type: "state",
       common: {
-        name: "millis",
+        name: i18n.json[`${idPrefix}.state.millis`],
         role: "value.interval",
         type: "number",
         unit: "ms",
@@ -555,7 +557,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.enabled`, {
       type: "state",
       common: {
-        name: "enabled",
+        name: i18n.json[`${idPrefix}.enabled`],
         role: "indicator",
         type: "boolean",
         write: false
@@ -564,7 +566,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.release`, {
       type: "state",
       common: {
-        name: "release",
+        name: i18n.json[`${idPrefix}.release`],
         role: "indicator",
         type: "boolean",
         write: false
@@ -573,7 +575,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.lastId`, {
       type: "state",
       common: {
-        name: "lastId",
+        name: i18n.json[`${idPrefix}.lastId`],
         role: "text",
         type: "string",
         write: false
@@ -586,7 +588,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.mode`, {
       type: "state",
       common: {
-        name: "mode",
+        name: i18n.json[`${idPrefix}.mode`],
         role: "inditator",
         type: "number",
         states: {
@@ -601,7 +603,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.watt`, {
       type: "state",
       common: {
-        name: "watt",
+        name: i18n.json[`${idPrefix}.watt`],
         role: "value.energy",
         type: "number",
         unit: "W",
@@ -611,7 +613,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.wbId`, {
       type: "state",
       common: {
-        name: "wbId",
+        name: i18n.json[`${idPrefix}.wbId`],
         role: "value",
         type: "number",
         write: true
@@ -625,7 +627,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.mac`, {
       type: "state",
       common: {
-        name: "mac",
+        name: i18n.json[`${idPrefix}.mac`],
         role: "text",
         type: "string",
         write: false
@@ -634,7 +636,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.rssi`, {
       type: "state",
       common: {
-        name: "rssi",
+        name: i18n.json[`${idPrefix}.rssi`],
         role: "value",
         type: "number",
         write: false
@@ -643,7 +645,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.signal`, {
       type: "state",
       common: {
-        name: "signal",
+        name: i18n.json[`${idPrefix}.signal`],
         role: "value",
         type: "number",
         write: false
@@ -652,7 +654,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.channel`, {
       type: "state",
       common: {
-        name: "channel",
+        name: i18n.json[`${idPrefix}.channel`],
         role: "value",
         type: "number",
         write: false
@@ -667,7 +669,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.busId`, {
       type: "state",
       common: {
-        name: "Bus Id",
+        name: i18n.box[`busId`],
         type: "number",
         write: false
       }
@@ -675,7 +677,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.version`, {
       type: "state",
       common: {
-        name: "version",
+        name: i18n.box[`version`],
         role: "text",
         type: "string",
         write: false
@@ -684,7 +686,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.chgStat`, {
       type: "state",
       common: {
-        name: "chgStat",
+        name: i18n.box[`chgStat`],
         role: "indicator",
         type: "number",
         write: false
@@ -703,7 +705,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currL1`, {
       type: "state",
       common: {
-        name: "Strom Phase 1",
+        name: i18n.box[`currL1`],
         role: "value.current",
         type: "number",
         write: false
@@ -712,7 +714,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currL2`, {
       type: "state",
       common: {
-        name: "Strom Phase 2",
+        name: i18n.box[`currL2`],
         role: "value.current",
         type: "number",
         write: false
@@ -721,7 +723,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currL3`, {
       type: "state",
       common: {
-        name: "Strom Phase 3",
+        name: i18n.box[`currL3`],
         role: "value.current",
         type: "number",
         write: false
@@ -730,7 +732,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.pcbTemp`, {
       type: "state",
       common: {
-        name: "Controller Temperatur",
+        name: i18n.box[`pcbTemp`],
         role: "value.temp",
         type: "number",
         unit: "\xB0C",
@@ -740,7 +742,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.voltL1`, {
       type: "state",
       common: {
-        name: "Spannung Phase 1",
+        name: i18n.box[`voltL1`],
         role: "value.voltage",
         type: "number",
         unit: "V",
@@ -750,7 +752,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.voltL2`, {
       type: "state",
       common: {
-        name: "Spannung Phase 2",
+        name: i18n.box[`voltL2`],
         role: "value.voltage",
         type: "number",
         unit: "V",
@@ -760,7 +762,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.voltL3`, {
       type: "state",
       common: {
-        name: "Spannung Phase 3",
+        name: i18n.box[`voltL3`],
         role: "value.voltage",
         type: "number",
         unit: "V",
@@ -770,7 +772,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.extLock`, {
       type: "state",
       common: {
-        name: "extLock",
+        name: i18n.box[`extLock`],
         role: "state",
         type: "number",
         write: false
@@ -779,7 +781,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.power`, {
       type: "state",
       common: {
-        name: "Power",
+        name: i18n.box[`power`],
         type: "number",
         write: false,
         role: "value.power.consumed",
@@ -789,7 +791,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.powerTarget`, {
       type: "state",
       common: {
-        name: "Power Target",
+        name: i18n.box[`powerTarget`],
         type: "number",
         write: true,
         role: "value.power",
@@ -799,7 +801,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.energyP`, {
       type: "state",
       common: {
-        name: "energyP",
+        name: i18n.box[`energyP`],
         role: "value.energy",
         type: "number",
         unit: "kWh",
@@ -809,7 +811,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.energyI`, {
       type: "state",
       common: {
-        name: "Energiez\xE4hler",
+        name: i18n.box[`energyI`],
         role: "value.energy",
         type: "number",
         unit: "kWh",
@@ -819,7 +821,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.energyC`, {
       type: "state",
       common: {
-        name: "Ladevorgang",
+        name: i18n.box[`energyC`],
         role: "value.energy",
         type: "number",
         unit: "kWh",
@@ -829,7 +831,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currMax`, {
       type: "state",
       common: {
-        name: "currMax",
+        name: i18n.box[`currMax`],
         role: "value.current",
         type: "number",
         unit: "A",
@@ -839,7 +841,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currMin`, {
       type: "state",
       common: {
-        name: "currMin",
+        name: i18n.box[`currMin`],
         role: "value.current",
         type: "number",
         unit: "A",
@@ -849,7 +851,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.logStr`, {
       type: "state",
       common: {
-        name: "logStr",
+        name: i18n.box[`logStr`],
         role: "text",
         type: "string",
         write: false
@@ -858,7 +860,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.wdTmOut`, {
       type: "state",
       common: {
-        name: "wdTmOut",
+        name: i18n.box[`wdTmOut`],
         role: "value.interval",
         type: "number",
         unit: "ms",
@@ -868,7 +870,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.standby`, {
       type: "state",
       common: {
-        name: "standby",
+        name: i18n.box[`standby`],
         role: "state",
         type: "number",
         desc: "Reg. 258: Standby Function Control",
@@ -882,7 +884,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.remLock`, {
       type: "state",
       common: {
-        name: "remLock",
+        name: i18n.box[`remLock`],
         role: "state",
         type: "number",
         write: false
@@ -891,7 +893,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currLim`, {
       type: "state",
       common: {
-        name: "currLim",
+        name: i18n.box[`currLim`],
         role: "value.current",
         type: "number",
         unit: "A",
@@ -901,7 +903,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.currFs`, {
       type: "state",
       common: {
-        name: "currFs",
+        name: i18n.box[`currFs`],
         role: "value.current",
         type: "number",
         unit: "A",
@@ -911,7 +913,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.lmReq`, {
       type: "state",
       common: {
-        name: "lmReq",
+        name: i18n.box[`lmReq`],
         role: "state",
         type: "number",
         write: false
@@ -920,7 +922,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.lmLim`, {
       type: "state",
       common: {
-        name: "lmLim",
+        name: i18n.box[`lmLim`],
         role: "state",
         type: "number",
         write: false
@@ -929,7 +931,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.resCode`, {
       type: "state",
       common: {
-        name: "resCode",
+        name: i18n.box[`resCode`],
         role: "state",
         type: "string",
         write: false
@@ -938,7 +940,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.failCnt`, {
       type: "state",
       common: {
-        name: "failCnt",
+        name: i18n.box[`failCnt`],
         role: "state",
         type: "number",
         write: false
@@ -947,7 +949,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.phases`, {
       type: "state",
       common: {
-        name: "Phasen",
+        name: i18n.box[`phases`],
         role: "value",
         type: "number",
         write: false
@@ -956,7 +958,7 @@ ${error}`);
     await this.extendObject(`${idPrefix}.phasesAvailable`, {
       type: "state",
       common: {
-        name: "Phasen verf\xFCgbar",
+        name: i18n.box[`phasesAvailable`],
         role: "value",
         type: "number",
         write: false

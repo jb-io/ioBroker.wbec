@@ -58,13 +58,20 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ```
 
 ## Open Tasks
-* Try to reset wbec client on error
+* Try to reset wbec client on connection error
+* Add single states for combined charge-state
+* Add further writable states: standby, remLock, wdTmOut, curLimFs
+* Add warn logging, if error state is not zero
+* Set Standby to 4 after adapter startup if equals zero
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [TASK] Add translations for all states
+
 ### 0.4.3 (2025-05-22)
 * [UPDATE] Update @iobroker/adapter-dev to 1.4.0
 * [UPDATE] Update @iobroker/testing to 5.0.4

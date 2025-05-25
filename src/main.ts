@@ -10,6 +10,7 @@ import * as utils from '@iobroker/adapter-core';
 import {Box, BoxId, Pv, PvMode, WbecConfigResponse} from 'wbec-client/dist/types';
 import _ from 'lodash';
 import WbecClient from 'wbec-client/dist/WbecClient';
+import * as i18n from './i18n';
 
 interface BoxStates extends Box {
     chgStat: number,
@@ -198,7 +199,7 @@ class Wbec extends utils.Adapter {
             await this.extendObject(idPrefix + '.timestamp', {
                 type: 'state',
                 common: {
-                    name: 'Zeitstempel',
+                    name: i18n.chargeLog['timestamp' as keyof typeof i18n.chargeLog],
                     type: 'number',
                     role: 'timestamp',
                     write: false,
@@ -208,7 +209,7 @@ class Wbec extends utils.Adapter {
             await this.extendObject(idPrefix + '.duration', {
                 type: 'state',
                 common: {
-                    name: 'Ladedauer',
+                    name: i18n.chargeLog['duration' as keyof typeof i18n.chargeLog],
                     type: 'number',
                     role: 'interval',
                     unit: 's',
@@ -219,7 +220,7 @@ class Wbec extends utils.Adapter {
             await this.extendObject(idPrefix + '.energy', {
                 type: 'state',
                 common: {
-                    name: 'Lademenge',
+                    name: i18n.chargeLog['energy' as keyof typeof i18n.chargeLog],
                     type: 'number',
                     role: 'value.energy',
                     unit: 'Wh',
@@ -230,7 +231,7 @@ class Wbec extends utils.Adapter {
             await this.extendObject(idPrefix + '.user', {
                 type: 'state',
                 common: {
-                    name: 'Benutzer',
+                    name: i18n.chargeLog['user' as keyof typeof i18n.chargeLog],
                     type: 'number',
                     role: 'value',
                     write: false,
@@ -501,10 +502,11 @@ class Wbec extends utils.Adapter {
         for (const wbecConfigKey in this.wbecConfig) {
             const id = `cfg.${wbecConfigKey}`;
             const value = this.wbecConfig[wbecConfigKey as keyof typeof this.wbecConfig];
+            const name = wbecConfigKey in i18n.cfg ? i18n.cfg[wbecConfigKey as keyof typeof i18n.cfg] : wbecConfigKey;
             promises.push(this.extendObject(id, {
                 type: 'state',
                 common: {
-                    name: wbecConfigKey,
+                    name: name,
                     write: false,
                     type: (typeof value) as ioBroker.CommonType,
                 },
@@ -533,7 +535,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.version`, {
             type: 'state',
             common: {
-                name: 'version',
+                name: i18n.json[`${idPrefix}.version` as keyof typeof i18n.json],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -542,7 +544,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.bldDate`, {
             type: 'state',
             common: {
-                name: 'bldDate',
+                name: i18n.json[`${idPrefix}.bldDate` as keyof typeof i18n.json],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -551,7 +553,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.timeNow`, {
             type: 'state',
             common: {
-                name: 'timeNow',
+                name: i18n.json[`${idPrefix}.timeNow` as keyof typeof i18n.json],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -560,7 +562,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.enwg14a`, {
             type: 'state',
             common: {
-                name: 'enwg14a',
+                name: i18n.json[`${idPrefix}.enwg14a` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -569,7 +571,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.enwgErr`, {
             type: 'state',
             common: {
-                name: 'enwgErr',
+                name: i18n.json[`${idPrefix}.enwgErr` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -582,7 +584,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.state.lastTm`, {
             type: 'state',
             common: {
-                name: 'lastTm',
+                name: i18n.json[`${idPrefix}.state.lastTm` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -591,7 +593,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.state.millis`, {
             type: 'state',
             common: {
-                name: 'millis',
+                name: i18n.json[`${idPrefix}.state.millis` as keyof typeof i18n.json],
                 role: 'value.interval',
                 type: 'number',
                 unit: 'ms',
@@ -605,7 +607,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.enabled`, {
             type: 'state',
             common: {
-                name: 'enabled',
+                name: i18n.json[`${idPrefix}.enabled` as keyof typeof i18n.json],
                 role: 'indicator',
                 type: 'boolean',
                 write: false,
@@ -614,7 +616,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.release`, {
             type: 'state',
             common: {
-                name: 'release',
+                name: i18n.json[`${idPrefix}.release` as keyof typeof i18n.json],
                 role: 'indicator',
                 type: 'boolean',
                 write: false,
@@ -623,7 +625,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.lastId`, {
             type: 'state',
             common: {
-                name: 'lastId',
+                name: i18n.json[`${idPrefix}.lastId` as keyof typeof i18n.json],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -636,7 +638,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.mode`, {
             type: 'state',
             common: {
-                name: 'mode',
+                name: i18n.json[`${idPrefix}.mode` as keyof typeof i18n.json],
                 role: 'inditator',
                 type: 'number',
                 states: {
@@ -651,7 +653,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.watt`, {
             type: 'state',
             common: {
-                name: 'watt',
+                name: i18n.json[`${idPrefix}.watt` as keyof typeof i18n.json],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'W',
@@ -661,7 +663,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.wbId`, {
             type: 'state',
             common: {
-                name: 'wbId',
+                name: i18n.json[`${idPrefix}.wbId` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: true,
@@ -675,7 +677,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.mac`, {
             type: 'state',
             common: {
-                name: 'mac',
+                name: i18n.json[`${idPrefix}.mac` as keyof typeof i18n.json],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -684,7 +686,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.rssi`, {
             type: 'state',
             common: {
-                name: 'rssi',
+                name: i18n.json[`${idPrefix}.rssi` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -693,7 +695,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.signal`, {
             type: 'state',
             common: {
-                name: 'signal',
+                name: i18n.json[`${idPrefix}.signal` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -702,7 +704,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.channel`, {
             type: 'state',
             common: {
-                name: 'channel',
+                name: i18n.json[`${idPrefix}.channel` as keyof typeof i18n.json],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -718,7 +720,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.busId`, {
             type: 'state',
             common: {
-                name: 'Bus Id',
+                name: i18n.box[`busId` as keyof  typeof i18n.box],
                 type: 'number',
                 write: false,
             }
@@ -726,7 +728,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.version`, {
             type: 'state',
             common: {
-                name: 'version',
+                name: i18n.box[`version` as keyof  typeof i18n.box],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -735,7 +737,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.chgStat`, {
             type: 'state',
             common: {
-                name: 'chgStat',
+                name: i18n.box[`chgStat` as keyof  typeof i18n.box],
                 role: 'indicator',
                 type: 'number',
                 write: false,
@@ -754,7 +756,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currL1`, {
             type: 'state',
             common: {
-                name: 'Strom Phase 1',
+                name: i18n.box[`currL1` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -763,7 +765,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currL2`, {
             type: 'state',
             common: {
-                name: 'Strom Phase 2',
+                name: i18n.box[`currL2` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -772,7 +774,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currL3`, {
             type: 'state',
             common: {
-                name: 'Strom Phase 3',
+                name: i18n.box[`currL3` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -781,7 +783,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.pcbTemp`, {
             type: 'state',
             common: {
-                name: 'Controller Temperatur',
+                name: i18n.box[`pcbTemp` as keyof  typeof i18n.box],
                 role: 'value.temp',
                 type: 'number',
                 unit: '°C',
@@ -791,7 +793,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL1`, {
             type: 'state',
             common: {
-                name: 'Spannung Phase 1',
+                name: i18n.box[`voltL1` as keyof  typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -801,7 +803,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL2`, {
             type: 'state',
             common: {
-                name: 'Spannung Phase 2',
+                name: i18n.box[`voltL2` as keyof  typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -811,7 +813,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL3`, {
             type: 'state',
             common: {
-                name: 'Spannung Phase 3',
+                name: i18n.box[`voltL3` as keyof  typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -821,7 +823,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.extLock`, {
             type: 'state',
             common: {
-                name: 'extLock',
+                name: i18n.box[`extLock` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -830,7 +832,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.power`, {
             type: 'state',
             common: {
-                name: 'Power',
+                name: i18n.box[`power` as keyof  typeof i18n.box],
                 type: 'number',
                 write: false,
                 role: 'value.power.consumed',
@@ -840,7 +842,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.powerTarget`, {
             type: 'state',
             common: {
-                name: 'Power Target',
+                name: i18n.box[`powerTarget` as keyof  typeof i18n.box],
                 type: 'number',
                 write: true,
                 role: 'value.power',
@@ -850,7 +852,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyP`, {
             type: 'state',
             common: {
-                name: 'energyP',
+                name: i18n.box[`energyP` as keyof  typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -860,7 +862,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyI`, {
             type: 'state',
             common: {
-                name: 'Energiezähler',
+                name: i18n.box[`energyI` as keyof  typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -870,7 +872,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyC`, {
             type: 'state',
             common: {
-                name: 'Ladevorgang',
+                name: i18n.box[`energyC` as keyof  typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -880,7 +882,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currMax`, {
             type: 'state',
             common: {
-                name: 'currMax',
+                name: i18n.box[`currMax` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -890,7 +892,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currMin`, {
             type: 'state',
             common: {
-                name: 'currMin',
+                name: i18n.box[`currMin` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -900,7 +902,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.logStr`, {
             type: 'state',
             common: {
-                name: 'logStr',
+                name: i18n.box[`logStr` as keyof  typeof i18n.box],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -909,7 +911,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.wdTmOut`, {
             type: 'state',
             common: {
-                name: 'wdTmOut',
+                name: i18n.box[`wdTmOut` as keyof  typeof i18n.box],
                 role: 'value.interval',
                 type: 'number',
                 unit: 'ms',
@@ -919,7 +921,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.standby`, {
             type: 'state',
             common: {
-                name: 'standby',
+                name: i18n.box[`standby` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 desc: 'Reg. 258: Standby Function Control',
@@ -933,7 +935,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.remLock`, {
             type: 'state',
             common: {
-                name: 'remLock',
+                name: i18n.box[`remLock` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -942,7 +944,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currLim`, {
             type: 'state',
             common: {
-                name: 'currLim',
+                name: i18n.box[`currLim` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -952,7 +954,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currFs`, {
             type: 'state',
             common: {
-                name: 'currFs',
+                name: i18n.box[`currFs` as keyof  typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -962,7 +964,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.lmReq`, {
             type: 'state',
             common: {
-                name: 'lmReq',
+                name: i18n.box[`lmReq` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -971,7 +973,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.lmLim`, {
             type: 'state',
             common: {
-                name: 'lmLim',
+                name: i18n.box[`lmLim` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -980,7 +982,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.resCode`, {
             type: 'state',
             common: {
-                name: 'resCode',
+                name: i18n.box[`resCode` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'string',
                 write: false,
@@ -989,7 +991,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.failCnt`, {
             type: 'state',
             common: {
-                name: 'failCnt',
+                name: i18n.box[`failCnt` as keyof  typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -998,7 +1000,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.phases`, {
             type: 'state',
             common: {
-                name: 'Phasen',
+                name: i18n.box[`phases` as keyof  typeof i18n.box],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -1007,7 +1009,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.phasesAvailable`, {
             type: 'state',
             common: {
-                name: 'Phasen verfügbar',
+                name: i18n.box[`phasesAvailable` as keyof  typeof i18n.box],
                 role: 'value',
                 type: 'number',
                 write: false,
