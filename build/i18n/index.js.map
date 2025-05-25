@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/i18n/index.ts"],
+  "sourcesContent": ["export {default as cfg} from './cfg';\nexport {default as json} from './json';\nexport {default as box} from './box';\nexport {default as chargeLog} from './charge-log';\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAA6B;AAC7B,kBAA8B;AAC9B,iBAA6B;AAC7B,wBAAmC;",
+  "names": []
+}
