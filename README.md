@@ -58,7 +58,11 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ```
 
 ## Open Tasks
-* Try to reset wbec client on error
+* Try to reset wbec client on connection error
+* Add single states for combined charge-state
+* Add further writable states: standby, remLock, wdTmOut, curLimFs
+* Add warn logging, if error state is not zero
+* Set Standby to 4 after adapter startup if equals zero
 
 ## Changelog
 <!--
