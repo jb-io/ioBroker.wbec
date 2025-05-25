@@ -69,7 +69,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.4 (2025-05-25)
 * [TASK] Add translations for all states
 
 ### 0.4.3 (2025-05-22)
