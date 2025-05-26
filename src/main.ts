@@ -136,6 +136,10 @@ class Wbec extends utils.Adapter {
                             case 'pcbTemp':
                                 val = val ? (val as number) / 10 : val;
                                 break;
+                            case 'resCode':
+                                if (val !== '0') {
+                                    this.log.warn(`Received invalid response code for Box ${boxKey} (${state}=${val})`);
+                                }
                         }
                         await this.setState(`box${boxKey}.${state}`, val, true);
                     }

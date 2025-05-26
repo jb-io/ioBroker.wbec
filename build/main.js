@@ -123,6 +123,10 @@ ${JSON.stringify(response, null, 2)}`);
               case "pcbTemp":
                 val = val ? val / 10 : val;
                 break;
+              case "resCode":
+                if (val !== "0") {
+                  this.log.warn(`Received invalid response code for Box ${boxKey} (${state}=${val})`);
+                }
             }
             await this.setState(`box${boxKey}.${state}`, val, true);
           }
@@ -172,6 +176,10 @@ ${error}`);
       this.log.debug(`Received charge log for Box: ${boxId}`);
       this.log.silly(`Charge log for Box: ${boxId}:
 ${JSON.stringify(chargeLog, null, 2)}`);
+      if (!chargeLog || !chargeLog.line || !Array.isArray(chargeLog.line)) {
+        this.log.warn(`Received invalid charge log format for Box: ${boxId}`);
+        return;
+      }
     } catch (error) {
       this.log.error(`Error while updating charge log for Box: ${boxId}
 ${error}`);
