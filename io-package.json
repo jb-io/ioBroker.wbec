@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "news": {
+      "0.4.5": {
+        "en": "[BUGFIX] Avoid exception if charge log is empty\n[TASK] Add warn logging, if resCode is not zero",
+        "de": "[BUGFIX] Ausnahme vermeiden, wenn das Ladeprotokoll leer ist\n[TASK] Warn-Logging hinzufügen, wenn resCode nicht null ist",
+        "ru": "[BUGFIX] Избегайте исключений, если журнал зарядки пуст\n[TASK] Добавить предупреждение о регистрации, если resCode не равен нулю",
+        "pt": "[BUGFIX] Evite exceção se o registro de carga estiver vazio\n[TASK] Adicionar aviso de registro, se resCode não é zero",
+        "nl": "[BUGFIX] Vermijd uitzondering als het laadlogboek leeg is\n[TASK] Waarschuwing toevoegen als resCode niet nul is",
+        "fr": "[BUGFIX] Évitez l'exception si le journal des charges est vide\n[TASK] Ajouter un avertissement de journalisation, si resCode n'est pas zéro",
+        "it": "[BUGFIX] Evitare l'eccezione se il registro di carica è vuoto\n[TASK] Aggiungi logging di avviso, se resCode non è zero",
+        "es": "[BUGFIX] Evite la excepción si el registro de carga está vacío\n[TASK] Add warn logging, if resCode is not zero",
+        "pl": "[BUGFIX] Unikać wyjątku, jeśli dziennik opłat jest pusty\n[TASK] Dodaj ostrzeżenie logowania, jeśli resCode nie jest zerem",
+        "uk": "[BUGFIX] Уникнути виключення, якщо журнал заряду порожній\n[TASK] Додати попередження залогів, якщо resCode не нульовий",
+        "zh-cn": "[BUGFIX] 如果充电日志为空则避免例外\n[TASK] 如果resCode不是零, 添加警告记录"
+      },
       "0.4.4": {
         "en": "[TASK] Add translations for all states",
         "de": "[TASK] Übersetzungen für alle Staaten hinzufügen",
@@ -80,19 +93,6 @@
         "pl": "[BUGFIX] Wartości prądowe ustawione na asera są w prawidłowym zakresie między 6.. 16 lub 0",
         "uk": "[BUGFIX] Встановити поточні значення в діапазоні між 6..16 або 0",
         "zh-cn": "[BUGFIX] 套装的当前值在6.16至0"
-      },
-      "0.3.0": {
-        "en": "[FEATURE] Add debug logging for every request\n[FEATURE] Filter onStateChange events to avoid handling on unchanged values\n[FEATURE] Add message handler to receive `setPowerTarget` messages\n[FEATURE] Add `phasesAvailable` state that remains at last used phases\n[FEATURE] Add `setCurrent` message handler to allow setting currLim for box without modifying states.",
-        "de": "(STÖHNT) Debug-Logging für jede Anfrage hinzufügen\n[FEATURE] Filter aufState Ereignisse ändern, um die Handhabung auf unveränderten Werten zu vermeiden\n(STÖHNT) Nachrichtenhandler hinzufügen, um `setPowerTarget` Nachrichten zu erhalten\n[FEATURE] Fügen Sie `phasesAvailable`-Zustand, der in den letzten verwendeten Phasen bleibt\n[FEATURE] Fügen Sie `setCurrent` Nachrichtenhandler hinzu, damit currLim für Box ohne Änderungszustände eingestellt werden kann.",
-        "ru": "[ФИАТУРА] Добавить отладку для каждого запроса\n[ФИЛЬТЕР] Фильтр на государственном уровне Измените события, чтобы избежать обработки неизмененных значений\n[ФИАТУРА] Добавить обработчик сообщений для получения сообщений SetPowerTarget\nДобавить «фазно-доступное» состояние, которое остается на последних используемых этапах\nДобавьте обработчик сообщений SetCurrent, чтобы разрешить настройку currLim для коробки без изменения состояний.",
-        "pt": "[FEATURE] Adicionar registro de depuração para cada solicitação\nFiltro em estado Alterar eventos para evitar lidar com valores inalterados\n[FEATURE] Adicionar manipulador de mensagem para receber mensagens `setPowerTarget`\n[FEATURE] Adicione `phasesAvailable` estado que permanece em fases usadas últimamente\n[FEATURE] Adicione o identificador de mensagem `setCurrent` para permitir a configuração currLim para caixa sem modificar estados.",
-        "nl": "[FEATURE] Voeg debug logging toe voor elke aanvraag\n[FEATURE] Filter opstaat Gebeurtenissen wijzigen om omgang met ongewijzigde waarden te vermijden\n[FEATURE] Berichtverlener toevoegen om berichten te ontvangen van de setPowerTarget\n[FEATURE] Voeg fases toeBeschikbare toestand die uiteindelijk gebruikt blijft\n[FEATURE] Voeg de berichtenbehandelaar toe om het instellen van currLim voor het vak zonder de status te wijzigen mogelijk te maken.",
-        "fr": "[FÉATURE] Ajouter l'enregistrement de débogage pour chaque demande\nFiltre sur l'état Changer les événements pour éviter de traiter sur des valeurs inchangées\n[FÉATURE] Ajouter le gestionnaire de message pour recevoir les messages `setPowerTarget`\n[FEATURE] Ajouter l'état \"phasesDisponibles\" qui reste aux dernières phases utilisées\n[FEATURE] Ajouter le gestionnaire de message `setCurrent` pour permettre le réglage currLim pour la boîte sans modifier les états.",
-        "it": "[FEATURE] Aggiungi debug per ogni richiesta\n[FEATURE] Filtro suState Cambiare gli eventi per evitare di gestire valori invariati\n[FEATURE] Aggiungi gestore di messaggi per ricevere messaggi `setPowerTarget`\n[FEATURE] Aggiungi `faseAvailable` stato che rimane nelle fasi finali utilizzate\n[FEATURE] Aggiungi `setCurrent` gestore del messaggio per consentire l'impostazione currLim per la casella senza modificare gli stati.",
-        "es": "[FEATURA] Añadir registro de depuración para cada solicitud\nFiltro en Estado Cambio de eventos para evitar el manejo de valores invariables\n[FEATURA] Añadir controlador de mensaje para recibir mensajes de `setPowerTarget`\n[FEATURE] Add `phasesAvailable` state that remains at last used phases\n[FEATURE] Añadir `setCurrent` message handler to allow setting currLim for box without modifying states.",
-        "pl": "[FEATURE] Dodaj logowanie debugowania dla każdego żądania\nFiltr on State Zmień zdarzenia, aby uniknąć obchodzenia się z niezmienionymi wartościami\n[FEATURE] Dodaj obsługę wiadomości, aby otrzymywać wiadomości 'setPowerTarget'\n[FEATURE] Dodać \"fazesDostępny\" stan, który pozostaje w ostatnio używanych fazach\n[FEATURE] Dodaj obsługę wiadomości \"setCurrent\", aby umożliwić ustawienie currLim dla pola bez modyfikacji stanów.",
-        "uk": "[Життя] Додайте дебюг за кожен запит\n[FEATURE] Фільтр наState Змінити події, щоб уникнути обробки значень\n[Життя] Додати обробник повідомлень для отримання повідомлень `setPowerTarget`\n[FEATURE] Додати стан `фаз\n[FEATURE] Додати `setCurrent` повідомлення обробник для налаштування currLim для ящика без змінних станів.",
-        "zh-cn": "[颤 为每个请求添加调试日志\n[FEATURE]在状态上的过滤器 更改事件以避免处理不变的值\n[颤 添加信件处理器以接收“ setPowerTalget” 信件\n[FEATURE] 添加最后使用阶段尚存的`可变相 ' 状态\n[FEATURE] 添加“ setCrent” 信件处理器,允许不修改状态为框设置 curLim ."
       }
     },
     "titleLang": {

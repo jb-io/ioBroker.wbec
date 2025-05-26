@@ -68,7 +68,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.5 (2025-05-26)
 * [BUGFIX] Avoid exception if charge log is empty
 * [TASK] Add warn logging, if resCode is not zero
 
