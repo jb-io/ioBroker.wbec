@@ -61,7 +61,6 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 * Try to reset wbec client on connection error
 * Add single states for combined charge-state
 * Add further writable states: standby, remLock, wdTmOut, curLimFs
-* Add warn logging, if error state is not zero
 * Set Standby to 4 after adapter startup if equals zero
 
 ## Changelog
@@ -69,6 +68,10 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [BUGFIX] Avoid exception if charge log is empty
+* [TASK] Add warn logging, if resCode is not zero
+
 ### 0.4.4 (2025-05-25)
 * [TASK] Add translations for all states
 

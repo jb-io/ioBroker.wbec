@@ -136,6 +136,10 @@ class Wbec extends utils.Adapter {
                             case 'pcbTemp':
                                 val = val ? (val as number) / 10 : val;
                                 break;
+                            case 'resCode':
+                                if (val !== '0') {
+                                    this.log.warn(`Received invalid response code for Box ${boxKey} (${state}=${val})`);
+                                }
                         }
                         await this.setState(`box${boxKey}.${state}`, val, true);
                     }
@@ -184,6 +188,11 @@ class Wbec extends utils.Adapter {
             chargeLog = await this.wbecDevice.requestChargeLog(boxId, 10);
             this.log.debug(`Received charge log for Box: ${boxId}`);
             this.log.silly(`Charge log for Box: ${boxId}:\n${JSON.stringify(chargeLog, null, 2)}`);
+
+            if (!chargeLog || !chargeLog.line || !Array.isArray(chargeLog.line)) {
+                this.log.warn(`Received invalid charge log format for Box: ${boxId}`);
+                return;
+            }
         } catch (error) {
             this.log.error(`Error while updating charge log for Box: ${boxId}\n${error}`);
             return;
