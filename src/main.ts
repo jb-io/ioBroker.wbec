@@ -143,6 +143,38 @@ class Wbec extends utils.Adapter {
                         }
                         await this.setState(`box${boxKey}.${state}`, val, true);
                     }
+                    switch (boxState.chgStat || null) {
+                        case 2: //State A1, No Vehicle plugged, Wallbox doesn't allow charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+                            break;
+                        case 3: //State A2, No Vehicle plugged, Wallbox allows charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+                            break;
+                        case 4: //State B1, Vehicle plugged without charging request, Wallbox doesn't allow charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+                            break;
+                        case 5: //State B2, Vehicle plugged without charging request, Wallbox allows charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+                            break;
+                        case 6: //State C1, Vehicle plugged with charging request, Wallbox doesn't allow charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+                            break;
+                        case 7: //State C2, Vehicle plugged with charging request, Wallbox allows charging
+                            await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+                            await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+                            await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+                            break;
+                    }
                     let phases = 0;
                     for (const key of ['currL1', 'currL2', 'currL3']) {
                         if (+boxState[key as keyof Box] > 60) {
@@ -257,6 +289,66 @@ class Wbec extends utils.Adapter {
                     await this.setState(`box${boxId}.powerTarget`, null, true);
                     await this.setBoxCurrLim(boxId, newState.val as number);
                     return true;
+                }
+                break;
+
+            case 'currFs':
+                if (!ack) {
+                    try {
+                        const current = this.roundCurrent(newState.val as number);
+                        this.log.debug(`set failsafeCurrentLimit to ${current}A for Box: ${boxId}`);
+                        const response = await this.wbecDevice.setFailsafeCurrentLimit(boxId, current * 10);
+                        this.log.debug(`Received failsafeCurrentLimit response`);
+                        this.log.silly(`setFailsafeCurrentLimit response:\n${JSON.stringify(response, null, 2)}`);
+                        return true;
+                    } catch (error) {
+                        this.log.error(`Error while setting failsafe current limit for Box: ${boxId} to ${newState.val}\n${error}`);
+                    }
+                }
+                break;
+
+            case 'standby':
+                if (!ack) {
+                    try {
+                        const standbyValue = Number(newState.val) as 0|4;
+                        this.log.debug(`set standby to ${standbyValue} for Box: ${boxId}`);
+                        const response = await this.wbecDevice.setStandby(boxId, standbyValue);
+                        this.log.debug(`Received standby response`);
+                        this.log.silly(`setStandby response:\n${JSON.stringify(response, null, 2)}`);
+                        return true;
+                    } catch (error) {
+                        this.log.error(`Error while setting standby for Box: ${boxId} to ${newState.val}\n${error}`);
+                    }
+                }
+                break;
+
+            case 'remLock':
+                if (!ack) {
+                    try {
+                        const remLockValue = Number(newState.val) as 0|1;
+                        this.log.debug(`set remLock to ${remLockValue} for Box: ${boxId}`);
+                        const response = await this.wbecDevice.setRemLock(boxId, remLockValue);
+                        this.log.debug(`Received remLock response`);
+                        this.log.silly(`setRemLock response:\n${JSON.stringify(response, null, 2)}`);
+                        return true;
+                    } catch (error) {
+                        this.log.error(`Error while setting remLock for Box: ${boxId} to ${newState.val}\n${error}`);
+                    }
+                }
+                break;
+
+            case 'wdTmOut':
+                if (!ack) {
+                    try {
+                        const timeout = Number(newState.val);
+                        this.log.debug(`set watchdogTimeout to ${timeout} for Box: ${boxId}`);
+                        const response = await this.wbecDevice.setWatchdogTimeout(boxId, timeout);
+                        this.log.debug(`Received watchdogTimeout response`);
+                        this.log.silly(`setWatchdogTimeout response:\n${JSON.stringify(response, null, 2)}`);
+                        return true;
+                    } catch (error) {
+                        this.log.error(`Error while setting watchdog timeout for Box: ${boxId} to ${newState.val}\n${error}`);
+                    }
                 }
                 break;
 
@@ -729,7 +821,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.busId`, {
             type: 'state',
             common: {
-                name: i18n.box[`busId` as keyof  typeof i18n.box],
+                name: i18n.box[`busId` as keyof typeof i18n.box],
                 type: 'number',
                 write: false,
             }
@@ -737,7 +829,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.version`, {
             type: 'state',
             common: {
-                name: i18n.box[`version` as keyof  typeof i18n.box],
+                name: i18n.box[`version` as keyof typeof i18n.box],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -746,26 +838,55 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.chgStat`, {
             type: 'state',
             common: {
-                name: i18n.box[`chgStat` as keyof  typeof i18n.box],
+                name: i18n.box[`chgStat` as keyof typeof i18n.box],
                 role: 'indicator',
                 type: 'number',
                 write: false,
+                states: {
+                    2: 'State A1, No vehicle connected, wallbox does not allow charging',
+                    3: 'State A2, No vehicle connected, wallbox allows charging',
+                    4: 'State B1, Vehicle connected without charging request, wallbox does not allow charging',
+                    5: 'State B2, Vehicle connected without charging request, wallbox allows charging',
+                    6: 'State C1, Vehicle connected with charging request, wallbox does not allow charging',
+                    7: 'State C2, Vehicle connected with charging request, wallbox allows charging',
+                    8: 'Derating',
+                    9: 'State E, Error',
+                    10: 'State F, Wallbox locked or not ready',
+                    11: 'Error'
+                }
             }
-            /*
-            switch (message.chgStat) {
-                case  2: / carStat = 'nein'; wbStat = 'nein'; break;              // A1
-                case  3: / carStat = 'nein'; wbStat = 'ja'; break;                // A2
-                case  4: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'nein'; break; // B1
-                case  5: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'ja'; break;   // B2
-                case  6: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'nein'; break; // C1
-                case  7: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'ja'; break;   // C2
-                default: carStat = message.chgStat; wbStat = '-';
-             */
+        });
+        await this.extendObject(`${idPrefix}.vehiclePlugged`, {
+            type: 'state',
+            common: {
+                name: i18n.box[`vehiclePlugged` as keyof typeof i18n.box],
+                role: 'sensor',
+                type: 'boolean',
+                write: false,
+            }
+        });
+        await this.extendObject(`${idPrefix}.vehicleChargingRequest`, {
+            type: 'state',
+            common: {
+                name: i18n.box[`vehicleChargingRequest` as keyof typeof i18n.box],
+                role: 'sensor',
+                type: 'boolean',
+                write: false,
+            }
+        });
+        await this.extendObject(`${idPrefix}.chargingAllowed`, {
+            type: 'state',
+            common: {
+                name: i18n.box[`chargingAllowed` as keyof typeof i18n.box],
+                role: 'sensor',
+                type: 'boolean',
+                write: false,
+            }
         });
         await this.extendObject(`${idPrefix}.currL1`, {
             type: 'state',
             common: {
-                name: i18n.box[`currL1` as keyof  typeof i18n.box],
+                name: i18n.box[`currL1` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -774,7 +895,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currL2`, {
             type: 'state',
             common: {
-                name: i18n.box[`currL2` as keyof  typeof i18n.box],
+                name: i18n.box[`currL2` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -783,7 +904,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currL3`, {
             type: 'state',
             common: {
-                name: i18n.box[`currL3` as keyof  typeof i18n.box],
+                name: i18n.box[`currL3` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 write: false,
@@ -792,7 +913,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.pcbTemp`, {
             type: 'state',
             common: {
-                name: i18n.box[`pcbTemp` as keyof  typeof i18n.box],
+                name: i18n.box[`pcbTemp` as keyof typeof i18n.box],
                 role: 'value.temp',
                 type: 'number',
                 unit: '°C',
@@ -802,7 +923,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL1`, {
             type: 'state',
             common: {
-                name: i18n.box[`voltL1` as keyof  typeof i18n.box],
+                name: i18n.box[`voltL1` as keyof typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -812,7 +933,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL2`, {
             type: 'state',
             common: {
-                name: i18n.box[`voltL2` as keyof  typeof i18n.box],
+                name: i18n.box[`voltL2` as keyof typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -822,7 +943,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.voltL3`, {
             type: 'state',
             common: {
-                name: i18n.box[`voltL3` as keyof  typeof i18n.box],
+                name: i18n.box[`voltL3` as keyof typeof i18n.box],
                 role: 'value.voltage',
                 type: 'number',
                 unit: 'V',
@@ -832,7 +953,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.extLock`, {
             type: 'state',
             common: {
-                name: i18n.box[`extLock` as keyof  typeof i18n.box],
+                name: i18n.box[`extLock` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -841,7 +962,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.power`, {
             type: 'state',
             common: {
-                name: i18n.box[`power` as keyof  typeof i18n.box],
+                name: i18n.box[`power` as keyof typeof i18n.box],
                 type: 'number',
                 write: false,
                 role: 'value.power.consumed',
@@ -851,7 +972,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.powerTarget`, {
             type: 'state',
             common: {
-                name: i18n.box[`powerTarget` as keyof  typeof i18n.box],
+                name: i18n.box[`powerTarget` as keyof typeof i18n.box],
                 type: 'number',
                 write: true,
                 role: 'value.power',
@@ -861,7 +982,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyP`, {
             type: 'state',
             common: {
-                name: i18n.box[`energyP` as keyof  typeof i18n.box],
+                name: i18n.box[`energyP` as keyof typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -871,7 +992,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyI`, {
             type: 'state',
             common: {
-                name: i18n.box[`energyI` as keyof  typeof i18n.box],
+                name: i18n.box[`energyI` as keyof typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -881,7 +1002,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.energyC`, {
             type: 'state',
             common: {
-                name: i18n.box[`energyC` as keyof  typeof i18n.box],
+                name: i18n.box[`energyC` as keyof typeof i18n.box],
                 role: 'value.energy',
                 type: 'number',
                 unit: 'kWh',
@@ -891,7 +1012,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currMax`, {
             type: 'state',
             common: {
-                name: i18n.box[`currMax` as keyof  typeof i18n.box],
+                name: i18n.box[`currMax` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -901,7 +1022,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currMin`, {
             type: 'state',
             common: {
-                name: i18n.box[`currMin` as keyof  typeof i18n.box],
+                name: i18n.box[`currMin` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -911,7 +1032,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.logStr`, {
             type: 'state',
             common: {
-                name: i18n.box[`logStr` as keyof  typeof i18n.box],
+                name: i18n.box[`logStr` as keyof typeof i18n.box],
                 role: 'text',
                 type: 'string',
                 write: false,
@@ -920,17 +1041,17 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.wdTmOut`, {
             type: 'state',
             common: {
-                name: i18n.box[`wdTmOut` as keyof  typeof i18n.box],
+                name: i18n.box[`wdTmOut` as keyof typeof i18n.box],
                 role: 'value.interval',
                 type: 'number',
                 unit: 'ms',
-                write: false,
+                write: true,
             }
         });
         await this.extendObject(`${idPrefix}.standby`, {
             type: 'state',
             common: {
-                name: i18n.box[`standby` as keyof  typeof i18n.box],
+                name: i18n.box[`standby` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 desc: 'Reg. 258: Standby Function Control',
@@ -938,22 +1059,22 @@ class Wbec extends utils.Adapter {
                     0: 'enable standby',
                     4: 'disable standby'
                 },
-                write: false,
+                write: true,
             }
         });
         await this.extendObject(`${idPrefix}.remLock`, {
             type: 'state',
             common: {
-                name: i18n.box[`remLock` as keyof  typeof i18n.box],
+                name: i18n.box[`remLock` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
-                write: false,
+                write: true,
             }
         });
         await this.extendObject(`${idPrefix}.currLim`, {
             type: 'state',
             common: {
-                name: i18n.box[`currLim` as keyof  typeof i18n.box],
+                name: i18n.box[`currLim` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
@@ -963,17 +1084,17 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.currFs`, {
             type: 'state',
             common: {
-                name: i18n.box[`currFs` as keyof  typeof i18n.box],
+                name: i18n.box[`currFs` as keyof typeof i18n.box],
                 role: 'value.current',
                 type: 'number',
                 unit: 'A',
-                write: false,
+                write: true,
             }
         });
         await this.extendObject(`${idPrefix}.lmReq`, {
             type: 'state',
             common: {
-                name: i18n.box[`lmReq` as keyof  typeof i18n.box],
+                name: i18n.box[`lmReq` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -982,7 +1103,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.lmLim`, {
             type: 'state',
             common: {
-                name: i18n.box[`lmLim` as keyof  typeof i18n.box],
+                name: i18n.box[`lmLim` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -991,7 +1112,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.resCode`, {
             type: 'state',
             common: {
-                name: i18n.box[`resCode` as keyof  typeof i18n.box],
+                name: i18n.box[`resCode` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'string',
                 write: false,
@@ -1000,7 +1121,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.failCnt`, {
             type: 'state',
             common: {
-                name: i18n.box[`failCnt` as keyof  typeof i18n.box],
+                name: i18n.box[`failCnt` as keyof typeof i18n.box],
                 role: 'state',
                 type: 'number',
                 write: false,
@@ -1009,7 +1130,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.phases`, {
             type: 'state',
             common: {
-                name: i18n.box[`phases` as keyof  typeof i18n.box],
+                name: i18n.box[`phases` as keyof typeof i18n.box],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -1018,7 +1139,7 @@ class Wbec extends utils.Adapter {
         await this.extendObject(`${idPrefix}.phasesAvailable`, {
             type: 'state',
             common: {
-                name: i18n.box[`phasesAvailable` as keyof  typeof i18n.box],
+                name: i18n.box[`phasesAvailable` as keyof typeof i18n.box],
                 role: 'value',
                 type: 'number',
                 write: false,
@@ -1029,6 +1150,10 @@ class Wbec extends utils.Adapter {
         await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
 
         this.subscribeStates(`${idPrefix}.currLim`);
+        this.subscribeStates(`${idPrefix}.currFs`);
+        this.subscribeStates(`${idPrefix}.standby`);
+        this.subscribeStates(`${idPrefix}.remLock`);
+        this.subscribeStates(`${idPrefix}.wdTmOut`);
         this.subscribeStates(`${idPrefix}.chgStat`);
         this.subscribeStates(`${idPrefix}.powerTarget`);
         this.subscribeStates(`${idPrefix}.phasesAvailable`);

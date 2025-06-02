@@ -389,4 +389,43 @@ export default {
         uk: 'Час очікування WatchDog ModBus-Master у мс',
         'zh-cn': 'ModBus-Master 看门狗超时（毫秒）'
     },
+    'vehiclePlugged': {
+        de: 'Fahrzeug angeschlossen',
+        en: 'Vehicle plugged in',
+        ru: 'Автомобиль подключен',
+        pt: 'Veículo conectado',
+        nl: 'Voertuig aangesloten',
+        fr: 'Véhicule branché',
+        it: 'Veicolo collegato',
+        es: 'Vehículo conectado',
+        pl: 'Pojazd podłączony',
+        uk: 'Автомобіль підключено',
+        'zh-cn': '已插入车辆'
+    },
+    'vehicleChargingRequest': {
+        de: 'Fahrzeug fordert Ladung an',
+        en: 'Vehicle requesting charge',
+        ru: 'Автомобиль запрашивает зарядку',
+        pt: 'Veículo solicitando carga',
+        nl: 'Voertuig vraagt om lading',
+        fr: 'Véhicule demandant une charge',
+        it: 'Veicolo che richiede carica',
+        es: 'Vehículo solicitando carga',
+        pl: 'Pojazd żądający ładowania',
+        uk: 'Автомобіль запитує заряджання',
+        'zh-cn': '车辆请求充电'
+    },
+    'chargingAllowed': {
+        de: 'Laden erlaubt',
+        en: 'Charging allowed',
+        ru: 'Зарядка разрешена',
+        pt: 'Carregamento permitido',
+        nl: 'Opladen toegestaan',
+        fr: 'Charge autorisée',
+        it: 'Ricarica consentita',
+        es: 'Carga permitida',
+        pl: 'Ładowanie dozwolone',
+        uk: 'Заряджання дозволено',
+        'zh-cn': '允许充电'
+    },
 };

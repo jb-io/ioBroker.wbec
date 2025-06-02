@@ -411,6 +411,45 @@ var box_default = {
     pl: "Limit czasu WatchDog ModBus-Master w ms",
     uk: "\u0427\u0430\u0441 \u043E\u0447\u0456\u043A\u0443\u0432\u0430\u043D\u043D\u044F WatchDog ModBus-Master \u0443 \u043C\u0441",
     "zh-cn": "ModBus-Master \u770B\u95E8\u72D7\u8D85\u65F6\uFF08\u6BEB\u79D2\uFF09"
+  },
+  "vehiclePlugged": {
+    de: "Fahrzeug angeschlossen",
+    en: "Vehicle plugged in",
+    ru: "\u0410\u0432\u0442\u043E\u043C\u043E\u0431\u0438\u043B\u044C \u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0435\u043D",
+    pt: "Ve\xEDculo conectado",
+    nl: "Voertuig aangesloten",
+    fr: "V\xE9hicule branch\xE9",
+    it: "Veicolo collegato",
+    es: "Veh\xEDculo conectado",
+    pl: "Pojazd pod\u0142\u0105czony",
+    uk: "\u0410\u0432\u0442\u043E\u043C\u043E\u0431\u0456\u043B\u044C \u043F\u0456\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u043E",
+    "zh-cn": "\u5DF2\u63D2\u5165\u8F66\u8F86"
+  },
+  "vehicleChargingRequest": {
+    de: "Fahrzeug fordert Ladung an",
+    en: "Vehicle requesting charge",
+    ru: "\u0410\u0432\u0442\u043E\u043C\u043E\u0431\u0438\u043B\u044C \u0437\u0430\u043F\u0440\u0430\u0448\u0438\u0432\u0430\u0435\u0442 \u0437\u0430\u0440\u044F\u0434\u043A\u0443",
+    pt: "Ve\xEDculo solicitando carga",
+    nl: "Voertuig vraagt om lading",
+    fr: "V\xE9hicule demandant une charge",
+    it: "Veicolo che richiede carica",
+    es: "Veh\xEDculo solicitando carga",
+    pl: "Pojazd \u017C\u0105daj\u0105cy \u0142adowania",
+    uk: "\u0410\u0432\u0442\u043E\u043C\u043E\u0431\u0456\u043B\u044C \u0437\u0430\u043F\u0438\u0442\u0443\u0454 \u0437\u0430\u0440\u044F\u0434\u0436\u0430\u043D\u043D\u044F",
+    "zh-cn": "\u8F66\u8F86\u8BF7\u6C42\u5145\u7535"
+  },
+  "chargingAllowed": {
+    de: "Laden erlaubt",
+    en: "Charging allowed",
+    ru: "\u0417\u0430\u0440\u044F\u0434\u043A\u0430 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0430",
+    pt: "Carregamento permitido",
+    nl: "Opladen toegestaan",
+    fr: "Charge autoris\xE9e",
+    it: "Ricarica consentita",
+    es: "Carga permitida",
+    pl: "\u0141adowanie dozwolone",
+    uk: "\u0417\u0430\u0440\u044F\u0434\u0436\u0430\u043D\u043D\u044F \u0434\u043E\u0437\u0432\u043E\u043B\u0435\u043D\u043E",
+    "zh-cn": "\u5141\u8BB8\u5145\u7535"
   }
 };
 //# sourceMappingURL=box.js.map

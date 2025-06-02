@@ -130,6 +130,38 @@ ${JSON.stringify(response, null, 2)}`);
             }
             await this.setState(`box${boxKey}.${state}`, val, true);
           }
+          switch (boxState.chgStat || null) {
+            case 2:
+              await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 3:
+              await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+            case 4:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 5:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+            case 6:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 7:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+          }
           let phases = 0;
           for (const key of ["currL1", "currL2", "currL3"]) {
             if (+boxState[key] > 60) {
@@ -237,6 +269,70 @@ ${error}`);
           await this.setState(`box${boxId}.powerTarget`, null, true);
           await this.setBoxCurrLim(boxId, newState.val);
           return true;
+        }
+        break;
+      case "currFs":
+        if (!ack) {
+          try {
+            const current = this.roundCurrent(newState.val);
+            this.log.debug(`set failsafeCurrentLimit to ${current}A for Box: ${boxId}`);
+            const response = await this.wbecDevice.setFailsafeCurrentLimit(boxId, current * 10);
+            this.log.debug(`Received failsafeCurrentLimit response`);
+            this.log.silly(`setFailsafeCurrentLimit response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting failsafe current limit for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "standby":
+        if (!ack) {
+          try {
+            const standbyValue = Number(newState.val);
+            this.log.debug(`set standby to ${standbyValue} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setStandby(boxId, standbyValue);
+            this.log.debug(`Received standby response`);
+            this.log.silly(`setStandby response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting standby for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "remLock":
+        if (!ack) {
+          try {
+            const remLockValue = Number(newState.val);
+            this.log.debug(`set remLock to ${remLockValue} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setRemLock(boxId, remLockValue);
+            this.log.debug(`Received remLock response`);
+            this.log.silly(`setRemLock response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting remLock for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "wdTmOut":
+        if (!ack) {
+          try {
+            const timeout = Number(newState.val);
+            this.log.debug(`set watchdogTimeout to ${timeout} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setWatchdogTimeout(boxId, timeout);
+            this.log.debug(`Received watchdogTimeout response`);
+            this.log.silly(`setWatchdogTimeout response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting watchdog timeout for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
         }
         break;
       case "powerTarget":
@@ -697,18 +793,47 @@ ${error}`);
         name: i18n.box[`chgStat`],
         role: "indicator",
         type: "number",
+        write: false,
+        states: {
+          2: "State A1, No vehicle connected, wallbox does not allow charging",
+          3: "State A2, No vehicle connected, wallbox allows charging",
+          4: "State B1, Vehicle connected without charging request, wallbox does not allow charging",
+          5: "State B2, Vehicle connected without charging request, wallbox allows charging",
+          6: "State C1, Vehicle connected with charging request, wallbox does not allow charging",
+          7: "State C2, Vehicle connected with charging request, wallbox allows charging",
+          8: "Derating",
+          9: "State E, Error",
+          10: "State F, Wallbox locked or not ready",
+          11: "Error"
+        }
+      }
+    });
+    await this.extendObject(`${idPrefix}.vehiclePlugged`, {
+      type: "state",
+      common: {
+        name: i18n.box[`vehiclePlugged`],
+        role: "sensor",
+        type: "boolean",
         write: false
       }
-      /*
-      switch (message.chgStat) {
-          case  2: / carStat = 'nein'; wbStat = 'nein'; break;              // A1
-          case  3: / carStat = 'nein'; wbStat = 'ja'; break;                // A2
-          case  4: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'nein'; break; // B1
-          case  5: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'ja'; break;   // B2
-          case  6: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'nein'; break; // C1
-          case  7: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'ja'; break;   // C2
-          default: carStat = message.chgStat; wbStat = '-';
-       */
+    });
+    await this.extendObject(`${idPrefix}.vehicleChargingRequest`, {
+      type: "state",
+      common: {
+        name: i18n.box[`vehicleChargingRequest`],
+        role: "sensor",
+        type: "boolean",
+        write: false
+      }
+    });
+    await this.extendObject(`${idPrefix}.chargingAllowed`, {
+      type: "state",
+      common: {
+        name: i18n.box[`chargingAllowed`],
+        role: "sensor",
+        type: "boolean",
+        write: false
+      }
     });
     await this.extendObject(`${idPrefix}.currL1`, {
       type: "state",
@@ -872,7 +997,7 @@ ${error}`);
         role: "value.interval",
         type: "number",
         unit: "ms",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.standby`, {
@@ -886,7 +1011,7 @@ ${error}`);
           0: "enable standby",
           4: "disable standby"
         },
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.remLock`, {
@@ -895,7 +1020,7 @@ ${error}`);
         name: i18n.box[`remLock`],
         role: "state",
         type: "number",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.currLim`, {
@@ -915,7 +1040,7 @@ ${error}`);
         role: "value.current",
         type: "number",
         unit: "A",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.lmReq`, {
@@ -975,6 +1100,10 @@ ${error}`);
     await this.setState(`${idPrefix}.powerTarget`, null, true);
     await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
     this.subscribeStates(`${idPrefix}.currLim`);
+    this.subscribeStates(`${idPrefix}.currFs`);
+    this.subscribeStates(`${idPrefix}.standby`);
+    this.subscribeStates(`${idPrefix}.remLock`);
+    this.subscribeStates(`${idPrefix}.wdTmOut`);
     this.subscribeStates(`${idPrefix}.chgStat`);
     this.subscribeStates(`${idPrefix}.powerTarget`);
     this.subscribeStates(`${idPrefix}.phasesAvailable`);
