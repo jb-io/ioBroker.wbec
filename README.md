@@ -59,7 +59,6 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 
 ## Open Tasks
 * Try to reset wbec client on connection error
-* Add single states for combined charge-state
 * Set Standby to 4 after adapter startup if equals zero
 
 ## Changelog
@@ -68,6 +67,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* [FEATURE] Add separate boolean states vehiclePlugged, vehicleChargingRequest, chargingAllowed defined by chgStat 
 * [FEATURE] Add further writable states: standby, remLock, wdTmOut, curLimFs
 
 ### 0.4.5 (2025-05-26)

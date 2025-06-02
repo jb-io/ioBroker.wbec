@@ -130,6 +130,38 @@ ${JSON.stringify(response, null, 2)}`);
             }
             await this.setState(`box${boxKey}.${state}`, val, true);
           }
+          switch (boxState.chgStat || null) {
+            case 2:
+              await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 3:
+              await this.setState(`box${boxKey}.vehiclePlugged`, false, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+            case 4:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 5:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, false, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+            case 6:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, false, true);
+              break;
+            case 7:
+              await this.setState(`box${boxKey}.vehiclePlugged`, true, true);
+              await this.setState(`box${boxKey}.vehicleChargingRequest`, true, true);
+              await this.setState(`box${boxKey}.chargingAllowed`, true, true);
+              break;
+          }
           let phases = 0;
           for (const key of ["currL1", "currL2", "currL3"]) {
             if (+boxState[key] > 60) {
@@ -761,18 +793,47 @@ ${error}`);
         name: i18n.box[`chgStat`],
         role: "indicator",
         type: "number",
+        write: false,
+        states: {
+          2: "State A1, No vehicle connected, wallbox does not allow charging",
+          3: "State A2, No vehicle connected, wallbox allows charging",
+          4: "State B1, Vehicle connected without charging request, wallbox does not allow charging",
+          5: "State B2, Vehicle connected without charging request, wallbox allows charging",
+          6: "State C1, Vehicle connected with charging request, wallbox does not allow charging",
+          7: "State C2, Vehicle connected with charging request, wallbox allows charging",
+          8: "Derating",
+          9: "State E, Error",
+          10: "State F, Wallbox locked or not ready",
+          11: "Error"
+        }
+      }
+    });
+    await this.extendObject(`${idPrefix}.vehiclePlugged`, {
+      type: "state",
+      common: {
+        name: i18n.box[`vehiclePlugged`],
+        role: "sensor",
+        type: "boolean",
         write: false
       }
-      /*
-      switch (message.chgStat) {
-          case  2: / carStat = 'nein'; wbStat = 'nein'; break;              // A1
-          case  3: / carStat = 'nein'; wbStat = 'ja'; break;                // A2
-          case  4: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'nein'; break; // B1
-          case  5: / carStat = 'ja, ohne Ladeanf.'; wbStat = 'ja'; break;   // B2
-          case  6: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'nein'; break; // C1
-          case  7: / carStat = 'ja,  mit Ladeanf.'; wbStat = 'ja'; break;   // C2
-          default: carStat = message.chgStat; wbStat = '-';
-       */
+    });
+    await this.extendObject(`${idPrefix}.vehicleChargingRequest`, {
+      type: "state",
+      common: {
+        name: i18n.box[`vehicleChargingRequest`],
+        role: "sensor",
+        type: "boolean",
+        write: false
+      }
+    });
+    await this.extendObject(`${idPrefix}.chargingAllowed`, {
+      type: "state",
+      common: {
+        name: i18n.box[`chargingAllowed`],
+        role: "sensor",
+        type: "boolean",
+        write: false
+      }
     });
     await this.extendObject(`${idPrefix}.currL1`, {
       type: "state",
