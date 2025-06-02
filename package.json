@@ -31,7 +31,7 @@
     "@alcalzone/release-script-plugin-manual-review": "^3.7.0",
     "@iobroker/adapter-dev": "^1.4.0",
     "@iobroker/testing": "^5.0.4",
-    "@iobroker/types": "^6.0.11",
+    "@iobroker/types": "^7.0.7",
     "@tsconfig/node20": "^20.1.4",
     "@types/chai": "^4.3.19",
     "@types/chai-as-promised": "^8.0.1",
@@ -54,7 +54,7 @@
     "sinon-chai": "^3.7.0",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
-    "typescript": "~5.7.2"
+    "typescript": "~5.8.3"
   },
   "main": "build/main.js",
   "files": [
