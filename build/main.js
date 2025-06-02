@@ -239,6 +239,70 @@ ${error}`);
           return true;
         }
         break;
+      case "currFs":
+        if (!ack) {
+          try {
+            const current = this.roundCurrent(newState.val);
+            this.log.debug(`set failsafeCurrentLimit to ${current}A for Box: ${boxId}`);
+            const response = await this.wbecDevice.setFailsafeCurrentLimit(boxId, current * 10);
+            this.log.debug(`Received failsafeCurrentLimit response`);
+            this.log.silly(`setFailsafeCurrentLimit response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting failsafe current limit for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "standby":
+        if (!ack) {
+          try {
+            const standbyValue = Number(newState.val);
+            this.log.debug(`set standby to ${standbyValue} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setStandby(boxId, standbyValue);
+            this.log.debug(`Received standby response`);
+            this.log.silly(`setStandby response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting standby for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "remLock":
+        if (!ack) {
+          try {
+            const remLockValue = Number(newState.val);
+            this.log.debug(`set remLock to ${remLockValue} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setRemLock(boxId, remLockValue);
+            this.log.debug(`Received remLock response`);
+            this.log.silly(`setRemLock response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting remLock for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
+      case "wdTmOut":
+        if (!ack) {
+          try {
+            const timeout = Number(newState.val);
+            this.log.debug(`set watchdogTimeout to ${timeout} for Box: ${boxId}`);
+            const response = await this.wbecDevice.setWatchdogTimeout(boxId, timeout);
+            this.log.debug(`Received watchdogTimeout response`);
+            this.log.silly(`setWatchdogTimeout response:
+${JSON.stringify(response, null, 2)}`);
+            return true;
+          } catch (error) {
+            this.log.error(`Error while setting watchdog timeout for Box: ${boxId} to ${newState.val}
+${error}`);
+          }
+        }
+        break;
       case "powerTarget":
         if (!ack) {
           await this.recalculatePowerTarget(boxId);
@@ -872,7 +936,7 @@ ${error}`);
         role: "value.interval",
         type: "number",
         unit: "ms",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.standby`, {
@@ -886,7 +950,7 @@ ${error}`);
           0: "enable standby",
           4: "disable standby"
         },
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.remLock`, {
@@ -895,7 +959,7 @@ ${error}`);
         name: i18n.box[`remLock`],
         role: "state",
         type: "number",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.currLim`, {
@@ -915,7 +979,7 @@ ${error}`);
         role: "value.current",
         type: "number",
         unit: "A",
-        write: false
+        write: true
       }
     });
     await this.extendObject(`${idPrefix}.lmReq`, {
@@ -975,6 +1039,10 @@ ${error}`);
     await this.setState(`${idPrefix}.powerTarget`, null, true);
     await this.setState(`${idPrefix}.phasesAvailable`, 1, true);
     this.subscribeStates(`${idPrefix}.currLim`);
+    this.subscribeStates(`${idPrefix}.currFs`);
+    this.subscribeStates(`${idPrefix}.standby`);
+    this.subscribeStates(`${idPrefix}.remLock`);
+    this.subscribeStates(`${idPrefix}.wdTmOut`);
     this.subscribeStates(`${idPrefix}.chgStat`);
     this.subscribeStates(`${idPrefix}.powerTarget`);
     this.subscribeStates(`${idPrefix}.phasesAvailable`);
