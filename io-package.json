@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wbec",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "news": {
+      "0.4.6": {
+        "en": "[FEATURE] Add separate boolean states vehiclePlugged, vehicleChargingRequest, chargingAllowed defined by chgStat \n[FEATURE] Add further writable states: standby, remLock, wdTmOut, curLimFs",
+        "de": "(STÖHNT) Fügen Sie separate booleanische Staaten Fahrzeug empfohlen, FahrzeugChargingRequest, Aufladen Erlaubt durch chgStat\n(STÖHNT) Weitere schreibbare Zustände hinzufügen: Standby, remLock, wdTmOut, curLimFs",
+        "ru": "[ФИАТУРА] Добавить отдельные булевые состояния vehiclePlugged, vehicleChargingRequest, зарядка Позволяет определяться chgStat\n[ФИАТУРА] Добавить следующие состояния: standby, remLock, wdTmOut, curLimFs",
+        "pt": "[FEATURE] Adicionar veículo de estados booleanos separados Plugged, veículoChargingRequest, carregamento Permitido definido por chgStat\n[FEATURE] Adicionar outros estados incríveis: standby, remLock, wdTmOut, curLimFs",
+        "nl": "[FEATURE] Voeg afzonderlijke booleaanse staat voertuigGepluggd, voertuigChargingRequest, opladen Toegestaan door chgStat\n[FEATURE] Meer schrijfbare toestanden toevoegen: stand-by, remLock, wdTmOut, curLimFs",
+        "fr": "[FÉATURE] Ajouter les états de booléen séparés VéhiculePlugged, VéhiculeChargementDemande, charge Autorisé défini par chgStat\n[FÉATURE] Ajouter d'autres états en écriture: standby, remLock, wdTmOut, curLimFs",
+        "it": "[FEATURE] Aggiungi veicolo di stati booleani separatiPlugged, veicoloChargingRequest, ricarica Definito da chgStat\n[FEATURE] Aggiungi altri stati scrivibili: standby, remLock, wdTmOut, curLimFs",
+        "es": "[FEATURA] Añadir separado boolean states vehiclePlugged, vehicleChargingRequest, charge Permitido definido por chgStat\n[FEATURA] Añadir otros estados de caridad: standby, remLock, wdTmOut, curLimFs",
+        "pl": "[FEATURE] Dodaj oddzielne stany boolean pojazd plugged, pojazd ChargingRequest, ładowanie Dozwolone zdefiniowane przez chgStat\n[FEATURE] Dodaj kolejne zapisywalne stany: czuwania, remLock, wdTmOut, curLimF",
+        "uk": "[Життя] Додайте окремий болеанські стани транспортний засібПлюсований, транспортний засібЗапобігання, зарядка Дозволено визначено chgStat\n[Життя] Додайте додаткові життєздатні стани: standby, remLock, wdTmOut, curLimFs",
+        "zh-cn": "[颤 添加单独的布林状态车辆 由 chgStat 定义\n[颤 添加可写入的状态: 备用状态、 remLock、 wdTmOut、 curLimFs"
+      },
       "0.4.5": {
         "en": "[BUGFIX] Avoid exception if charge log is empty\n[TASK] Add warn logging, if resCode is not zero",
         "de": "[BUGFIX] Ausnahme vermeiden, wenn das Ladeprotokoll leer ist\n[TASK] Warn-Logging hinzufügen, wenn resCode nicht null ist",
@@ -80,19 +93,6 @@
         "pl": "[REFACTOR] Poprawia różne problemy zgłaszane z sprawdzania adaptera\n[FEATURE] Asert wszystkie timery są resetowane na adapter Unload",
         "uk": "[REFACTOR] Виправлення різних питань, що повідомляються від перевірки адаптера\n[Життя] Вставити всі таймери скидання на адаптері",
         "zh-cn": "[反 解决适配器检查器报告的各种问题\n[颤 将所有计时器重置在 Unload 适配器上"
-      },
-      "0.3.1": {
-        "en": "[BUGFIX] Assert set current values are in valid range between 6..16 or 0",
-        "de": "[BUGFIX] Assert-Sollstromwerte liegen im gültigen Bereich zwischen 6.16 oder 0",
-        "ru": "[BUGFIX] Устанавливаемые значения тока находятся в допустимом диапазоне между 6..16 или 0",
-        "pt": "[BUGFIX] Os valores atuais dos conjuntos Assert estão em intervalo válido entre 6.16 e 0",
-        "nl": "[BUGFIX] Assert ingestelde stroomwaarden liggen tussen 6.16 of 0",
-        "fr": "[BUGFIX] Assister les valeurs courantes de l'ensemble sont dans la plage valide entre 6..16 ou 0",
-        "it": "[BUGFIX] I valori correnti impostati sono validi tra 6..16 o 0",
-        "es": "[BUGFIX] Los valores actuales de Assert están en rango válido entre 6,16 o 0",
-        "pl": "[BUGFIX] Wartości prądowe ustawione na asera są w prawidłowym zakresie między 6.. 16 lub 0",
-        "uk": "[BUGFIX] Встановити поточні значення в діапазоні між 6..16 або 0",
-        "zh-cn": "[BUGFIX] 套装的当前值在6.16至0"
       }
     },
     "titleLang": {

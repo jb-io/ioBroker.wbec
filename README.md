@@ -66,7 +66,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.6 (2025-06-02)
 * [FEATURE] Add separate boolean states vehiclePlugged, vehicleChargingRequest, chargingAllowed defined by chgStat 
 * [FEATURE] Add further writable states: standby, remLock, wdTmOut, curLimFs
 
