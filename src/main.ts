@@ -591,6 +591,10 @@ class Wbec extends utils.Adapter {
         }
     }
 
+    private sanitizeObjectId(name: string): string {
+        return (name || '').replace(this.FORBIDDEN_CHARS, '_').replace(/[.\s]/g, '_');
+    }
+
     private async createConfigStates(): Promise<void> {
         const promises: Promise<any>[] = [];
 
@@ -601,7 +605,7 @@ class Wbec extends utils.Adapter {
             type: 'device',
         });
         for (const wbecConfigKey in this.wbecConfig) {
-            const id = `cfg.${wbecConfigKey}`;
+            const id = `cfg.${this.sanitizeObjectId(wbecConfigKey)}`;
             const value = this.wbecConfig[wbecConfigKey as keyof typeof this.wbecConfig];
             const name = wbecConfigKey in i18n.cfg ? i18n.cfg[wbecConfigKey as keyof typeof i18n.cfg] : wbecConfigKey;
             promises.push(this.extendObject(id, {
