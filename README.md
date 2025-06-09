@@ -69,6 +69,7 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
 ### **WORK IN PROGRESS**
 * [TASK] Sanitize object ids to void object ids with invalid characters 
 * [TASK] Add validation for interval or timeout times
+* [TASK] Bump node version for tests
 
 ### 0.4.6 (2025-06-02)
 * [FEATURE] Add separate boolean states vehiclePlugged, vehicleChargingRequest, chargingAllowed defined by chgStat 
