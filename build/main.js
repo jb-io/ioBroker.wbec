@@ -41,13 +41,19 @@ class Wbec extends utils.Adapter {
     this.on("stateChange", this.onStateChange.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.on("message", this.onMessage.bind(this));
-    this.update = import_lodash.default.throttle(this.update.bind(this), this.config.maxRequestInterval * 1.1);
+    const throttleMs = this.config.maxRequestInterval * 1.1;
+    this.update = import_lodash.default.throttle(this.update.bind(this), this.boundTimeoutValue(throttleMs));
   }
   get wbecDevice() {
     return this._wbecDevice;
   }
   get wbecConfig() {
     return this._wbecConfig;
+  }
+  boundTimeoutValue(ms) {
+    const min = 16;
+    const max = 2147483647;
+    return Math.max(min, Math.min(ms, max));
   }
   roundCurrent(current) {
     if (current < 6) {
@@ -84,15 +90,18 @@ ${JSON.stringify(this._wbecConfig, null, 2)}`);
     }
     await this.createConfigStates();
     await this.createStates();
-    this.requestInterval = this.setInterval(this.onInterval.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1e3));
+    const intervalMs = Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1e3);
+    this.requestInterval = this.setInterval(this.onInterval.bind(this), this.boundTimeoutValue(intervalMs));
     this.update();
     if (this.config.energyMeterId) {
-      this.onEnergyMeterChange = import_lodash.default.throttle(this.onEnergyMeterChange.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1e3));
+      const throttleMs = Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1e3);
+      this.onEnergyMeterChange = import_lodash.default.throttle(this.onEnergyMeterChange.bind(this), this.boundTimeoutValue(throttleMs));
       this.subscribeForeignStates(this.config.energyMeterId);
     }
     if (this._enableChargeLog) {
       for (let boxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-        this.setTimeout(() => this.updateChargeLog(boxId), (3 + boxId) * this.config.maxRequestInterval);
+        const timeoutMs = (3 + boxId) * this.config.maxRequestInterval;
+        this.setTimeout(() => this.updateChargeLog(boxId), this.boundTimeoutValue(timeoutMs));
       }
     }
   }
@@ -549,6 +558,9 @@ ${error}`);
       callback();
     }
   }
+  sanitizeObjectId(name) {
+    return (name || "").replace(this.FORBIDDEN_CHARS, "_").replace(/[.\s]/g, "_");
+  }
   async createConfigStates() {
     const promises = [];
     if (await this.objectExists(`cfg`)) {
@@ -558,7 +570,7 @@ ${error}`);
       type: "device"
     });
     for (const wbecConfigKey in this.wbecConfig) {
-      const id = `cfg.${wbecConfigKey}`;
+      const id = `cfg.${this.sanitizeObjectId(wbecConfigKey)}`;
       const value = this.wbecConfig[wbecConfigKey];
       const name = wbecConfigKey in i18n.cfg ? i18n.cfg[wbecConfigKey] : wbecConfigKey;
       promises.push(this.extendObject(id, {

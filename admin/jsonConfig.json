@@ -4,7 +4,19 @@
     "items": {
         "general": {
             "type": "panel",
-            "label": "general",
+            "label": {
+                "en": "General",
+                "de": "Allgemein",
+                "ru": "Общий",
+                "pt": "Geral",
+                "nl": "Algemeen",
+                "fr": "Général",
+                "it": "Generale",
+                "es": "General",
+                "pl": "Ogólne",
+                "uk": "Загальний",
+                "zh-cn": "一般"
+            },
             "items": {
                 "host": {
                     "xs": 12,
@@ -13,7 +25,19 @@
                     "lg": 4,
                     "xl": 4,
                     "type": "text",
-                    "label": "host"
+                    "label": {
+                        "en": "Host",
+                        "de": "Host",
+                        "ru": "Хост",
+                        "pt": "Host",
+                        "nl": "Host",
+                        "fr": "Hôte",
+                        "it": "Host",
+                        "es": "Host",
+                        "pl": "Host",
+                        "uk": "Хост",
+                        "zh-cn": "主机"
+                    }
                 },
                 "requestInterval": {
                     "xs": 12,
@@ -22,7 +46,34 @@
                     "lg": 2,
                     "xl": 2,
                     "type": "number",
-                    "label": "request_interval"
+                    "label": {
+                        "en": "Request interval",
+                        "de": "Abfrageintervall",
+                        "ru": "Интервал запроса",
+                        "pt": "Intervalo de solicitação",
+                        "nl": "Aanvraaginterval",
+                        "fr": "Intervalle de demande",
+                        "it": "Intervallo di richiesta",
+                        "es": "Intervalo de solicitud",
+                        "pl": "Interwał zapytania",
+                        "uk": "Інтервал запиту",
+                        "zh-cn": "请求间隔"
+                    },
+                    "min": 16,
+                    "max": 2147483647,
+                    "validatorErrorText": {
+                        "en": "Request interval validation error",
+                        "de": "Validierungsfehler beim Abfrageintervall",
+                        "ru": "Ошибка проверки интервала запроса",
+                        "pt": "Erro de validação de intervalo de solicitação",
+                        "nl": "Validatiefout aanvraaginterval",
+                        "fr": "Erreur de validation de l'intervalle de demande",
+                        "it": "Errore di convalida dell'intervallo di richiesta",
+                        "es": "Error de validación de intervalo de solicitud",
+                        "pl": "Błąd walidacji interwału zapytania",
+                        "uk": "Помилка перевірки інтервалу запиту",
+                        "zh-cn": "请求间隔验证错误"
+                    }
                 },
                 "requestTimeout": {
                     "xs": 12,
@@ -31,7 +82,35 @@
                     "lg": 2,
                     "xl": 2,
                     "type": "number",
-                    "label": "request_timeout"
+                    "label": {
+                        "en": "Request timeout",
+                        "de": "Anfragezeitüberschreitung",
+                        "ru": "Тайм-аут запроса",
+                        "pt": "Tempo limite de solicitação",
+                        "nl": "Aanvraag time-out",
+                        "fr": "Délai de demande",
+                        "it": "Timeout della richiesta",
+                        "es": "Tiempo de espera de solicitud",
+                        "pl": "Limit czasu żądania",
+                        "uk": "Час очікування запиту",
+                        "zh-cn": "请求超时"
+                    },
+                    "min": 16,
+                    "max": 2147483647,
+                    "validator": "data.requestTimeout < data.requestInterval",
+                    "validatorErrorText": {
+                        "en": "Request timeout validation error",
+                        "de": "Validierungsfehler bei Anfragezeitüberschreitung",
+                        "ru": "Ошибка проверки тайм-аута запроса",
+                        "pt": "Erro de validação de tempo limite de solicitação",
+                        "nl": "Validatiefout aanvraag time-out",
+                        "fr": "Erreur de validation du délai de demande",
+                        "it": "Errore di convalida del timeout della richiesta",
+                        "es": "Error de validación de tiempo de espera de solicitud",
+                        "pl": "Błąd walidacji limitu czasu żądania",
+                        "uk": "Помилка перевірки часу очікування запиту",
+                        "zh-cn": "请求超时验证错误"
+                    }
                 },
                 "maxRequestInterval": {
                     "xs": 12,
@@ -40,13 +119,53 @@
                     "lg": 2,
                     "xl": 2,
                     "type": "number",
-                    "label": "max_request_interval"
+                    "label": {
+                        "en": "Max request interval",
+                        "de": "Maximales Abfrageintervall",
+                        "ru": "Максимальный интервал запроса",
+                        "pt": "Intervalo máximo de solicitação",
+                        "nl": "Maximaal aanvraaginterval",
+                        "fr": "Intervalle de demande maximal",
+                        "it": "Intervallo massimo di richiesta",
+                        "es": "Intervalo máximo de solicitud",
+                        "pl": "Maksymalny interwał zapytania",
+                        "uk": "Максимальний інтервал запиту",
+                        "zh-cn": "最大请求间隔"
+                    },
+                    "min": 16,
+                    "max": 2147483647,
+                    "validator": "data.maxRequestInterval < data.requestInterval",
+                    "validatorErrorText": {
+                        "en": "Max request interval validation error",
+                        "de": "Validierungsfehler beim maximalen Abfrageintervall",
+                        "ru": "Ошибка проверки максимального интервала запроса",
+                        "pt": "Erro de validação de intervalo máximo de solicitação",
+                        "nl": "Validatiefout maximaal aanvraaginterval",
+                        "fr": "Erreur de validation de l'intervalle de demande maximal",
+                        "it": "Errore di convalida dell'intervallo massimo di richiesta",
+                        "es": "Error de validación de intervalo máximo de solicitud",
+                        "pl": "Błąd walidacji maksymalnego interwału zapytania",
+                        "uk": "Помилка перевірки максимального інтервалу запиту",
+                        "zh-cn": "最大请求间隔验证错误"
+                    }
                 }
             }
         },
         "energy_control": {
             "type": "panel",
-            "label": "energy_control",
+            "label": {
+                "en": "Energy control",
+                "de": "Energiesteuerung",
+                "ru": "Управление энергией",
+                "pt": "Controle de energia",
+                "nl": "Energiebeheer",
+                "fr": "Contrôle d'énergie",
+                "it": "Controllo energia",
+                "es": "Control de energía",
+                "pl": "Kontrola energii",
+                "uk": "Керування енергією",
+                "zh-cn": "能源控制"
+            },
             "items": {
                 "energyMeterId": {
                     "xs": 12,
@@ -55,7 +174,20 @@
                     "lg": 4,
                     "xl": 4,
                     "type": "objectId",
-                    "label": "energy_meter_id",
+                    "types": "state",
+                    "label": {
+                        "en": "Energy meter ID",
+                        "de": "Energiezähler-ID",
+                        "ru": "ID счетчика энергии",
+                        "pt": "ID do medidor de energia",
+                        "nl": "Energiemeter ID",
+                        "fr": "ID du compteur d'énergie",
+                        "it": "ID contatore energia",
+                        "es": "ID del medidor de energía",
+                        "pl": "ID licznika energii",
+                        "uk": "ID лічильника енергії",
+                        "zh-cn": "能源计量表ID"
+                    },
                     "newLine": true
                 }
             }
