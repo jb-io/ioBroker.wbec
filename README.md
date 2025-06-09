@@ -66,6 +66,11 @@ sendTo('wbec.0', 'setPowerTarget', { id: 0, powerTarget: 3600 });
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* [TASK] Sanitize object ids to void object ids with invalid characters 
+* [TASK] Add validation for interval or timeout times
+* [TASK] Bump node version for tests
+
 ### 0.4.6 (2025-06-02)
 * [FEATURE] Add separate boolean states vehiclePlugged, vehicleChargingRequest, chargingAllowed defined by chgStat 
 * [FEATURE] Add further writable states: standby, remLock, wdTmOut, curLimFs

@@ -40,7 +40,8 @@ class Wbec extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
         this.on('message', this.onMessage.bind(this));
 
-        this.update = _.throttle(this.update.bind(this), this.config.maxRequestInterval * 1.1);
+        const throttleMs = this.config.maxRequestInterval * 1.1;
+        this.update = _.throttle(this.update.bind(this), this.boundTimeoutValue(throttleMs));
     }
 
     get wbecDevice(): WbecClient {
@@ -49,6 +50,12 @@ class Wbec extends utils.Adapter {
 
     get wbecConfig(): WbecConfigResponse {
         return this._wbecConfig as WbecConfigResponse;
+    }
+
+    private boundTimeoutValue(ms: number): number {
+        const min = 0x10; // 16 in Decimal
+        const max = 0x7FFFFFFF; // 2.147.483.647 in Dezimal
+        return Math.max(min, Math.min(ms, max));
     }
 
     private roundCurrent(current: number): number {
@@ -92,17 +99,20 @@ class Wbec extends utils.Adapter {
         await this.createConfigStates();
         await this.createStates();
 
-        this.requestInterval = this.setInterval(this.onInterval.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1000));
+        const intervalMs = Math.max(this.config.maxRequestInterval * 1.1, this.config.requestInterval * 1000);
+        this.requestInterval = this.setInterval(this.onInterval.bind(this), this.boundTimeoutValue(intervalMs));
         this.update();
 
         if (this.config.energyMeterId) {
-            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this), Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1000));
+            const throttleMs = Math.max(this.config.maxRequestInterval * 1.1, this.wbecConfig.cfgPvCycleTime * 1000);
+            this.onEnergyMeterChange = _.throttle(this.onEnergyMeterChange.bind(this), this.boundTimeoutValue(throttleMs));
             this.subscribeForeignStates(this.config.energyMeterId);
         }
 
         if (this._enableChargeLog) {
             for (let boxId: BoxId = 0; boxId < this.wbecConfig.cfgCntWb; boxId++) {
-                this.setTimeout(() => this.updateChargeLog(boxId as BoxId), (3 + boxId) * this.config.maxRequestInterval);
+                const timeoutMs = (3 + boxId) * this.config.maxRequestInterval;
+                this.setTimeout(() => this.updateChargeLog(boxId as BoxId), this.boundTimeoutValue(timeoutMs));
             }
         }
     }
@@ -591,6 +601,10 @@ class Wbec extends utils.Adapter {
         }
     }
 
+    private sanitizeObjectId(name: string): string {
+        return (name || '').replace(this.FORBIDDEN_CHARS, '_').replace(/[.\s]/g, '_');
+    }
+
     private async createConfigStates(): Promise<void> {
         const promises: Promise<any>[] = [];
 
@@ -601,7 +615,7 @@ class Wbec extends utils.Adapter {
             type: 'device',
         });
         for (const wbecConfigKey in this.wbecConfig) {
-            const id = `cfg.${wbecConfigKey}`;
+            const id = `cfg.${this.sanitizeObjectId(wbecConfigKey)}`;
             const value = this.wbecConfig[wbecConfigKey as keyof typeof this.wbecConfig];
             const name = wbecConfigKey in i18n.cfg ? i18n.cfg[wbecConfigKey as keyof typeof i18n.cfg] : wbecConfigKey;
             promises.push(this.extendObject(id, {
